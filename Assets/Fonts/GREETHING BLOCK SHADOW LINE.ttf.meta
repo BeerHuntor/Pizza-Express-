@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: a6f1e1e9eb2180b418745dffca8ccf22
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: GREETHING BLOCK SHADOW LINE
+  fontNames:
+  - GREETHING BLOCK SHADOW LINE
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
