@@ -41,7 +41,7 @@ public class DeliveryCrate : MonoBehaviour
                 Destroy(gameObject);
                 _deliverySystem.GetDelivery();
                 _deliverySystem.SetCrateActive(true);
-                _spawnManager.SetCrateSpawned(false);
+                _spawnManager.CrateSpawned = false;
             }
         }
     }

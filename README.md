@@ -7,5 +7,6 @@ still in early development, but planned features include:
 
 * Full Shop Upgrade System
 * Quirky boost system. 
+* Highscores
 
 Play a very early version at: https://connect.unity.com/mg/other/pizza-express

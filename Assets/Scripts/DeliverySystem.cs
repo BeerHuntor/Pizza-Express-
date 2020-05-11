@@ -12,6 +12,8 @@ public class DeliverySystem : MonoBehaviour
 
     private PlayerMovement _playerMovement;
     private PizzaAttach _pizzaAttach;
+    private GameObject hc;
+    private HungryCustomerMovement _hungryCustomerMovement;
     
 
     // Start is called before the first frame update
@@ -19,7 +21,8 @@ public class DeliverySystem : MonoBehaviour
     {
         _playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         _pizzaAttach = GameObject.Find("Player").GetComponent<PizzaAttach>();
-
+        hc = Resources.Load("Prefabs/Z_Hungry_Customer") as GameObject; //Using resources.Load to get refrence to the hungry customer game object.
+        _hungryCustomerMovement = hc.GetComponent<HungryCustomerMovement>();
         deliveries.Add("ENERGIZED"); //Speeds up the player randomly 
         deliveries.Add("BIGGER_HANDS"); // double pizza stack
         deliveries.Add("RUSH_HOUR"); // quicker customers
@@ -27,10 +30,17 @@ public class DeliverySystem : MonoBehaviour
         deliveries.Add("OVERTIME"); //more customers in this wave
         deliveries.Add("CASHFLOW"); //more money earned.
     }
+    public void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            _hungryCustomerMovement.SetMovementSpeed(2f);
+        }
+    }
     // Gets the current delivery at random from a list of set deliveries.
     public void GetDelivery ()
     {
-        int deliveryIndex = Random.Range(1, 2);
+        int deliveryIndex = Random.Range(2, 3);
 
         currentDelivery = deliveries[deliveryIndex];
         ExecuteDelivery();
@@ -48,6 +58,7 @@ public class DeliverySystem : MonoBehaviour
                 BiggerHands();
                 break;
             case "RUSH_HOUR":
+                StartCoroutine(RushHour());
                 break;
             case "TIME_IS_DRAGGING":
                 break;
@@ -82,12 +93,11 @@ public class DeliverySystem : MonoBehaviour
         SetCrateActive(false);
     }
 
+    // Code for the bigger hands delivery
     private void BiggerHands()
     {
         _pizzaAttach.SetNextPizzaBuff(true);
 
-        Debug.Log("Next pizza buffed!");
-        //do somethinbg
     }
 
     //Getter to check if bigger hands is ready to use.
@@ -101,4 +111,18 @@ public class DeliverySystem : MonoBehaviour
     {
         biggerHandsReadyToUse = ready;
     }
+
+    //Code for RushHour Delivery.
+    private IEnumerator RushHour ()
+    {
+        float speedChange = Random.Range(1f, 5f);
+        _hungryCustomerMovement.SetMovementSpeed(speedChange);
+        Debug.LogWarning("Rush Hour activated: speed at ");
+
+        yield return new WaitForSeconds(activeTime);
+        Debug.Log("Completed!");
+        //_hungryCustomerMovement.SetDefaultSpeed();
+
+    }
+
 }

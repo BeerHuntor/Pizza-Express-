@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     private int activeCustomers; // Variable to calculate the active customers in the wave
 
     public bool gameIsRunning = false;
-    public int pizzaSlices;
+    private int pizzaSlices;
     public int counterHealth;
     // Start is called before the first frame update
     void Start()
@@ -57,12 +57,12 @@ public class GameManager : MonoBehaviour
     //Counts down the counter in between waves. 
     public IEnumerator WaveCountdownTimer()
     {
-        if (_spawnManager.dayCount == 0)
+        if (_spawnManager.DayCount == 0)
         {
-            _spawnManager.dayCount = 1;
+            _spawnManager.DayCount = 1;
         }
         countdownText.gameObject.SetActive(true);
-        countdownText.text = "Day " + _spawnManager.dayCount;
+        countdownText.text = "Day " + _spawnManager.DayCount;
         yield return new WaitForSeconds(timeBetweenTextCountdown);
         countdownText.text = "Ready?";
         yield return new WaitForSeconds(timeBetweenTextCountdown);
@@ -91,8 +91,7 @@ public class GameManager : MonoBehaviour
 
         restartButton.onClick.AddListener(GameReload);
         gameIsRunning = false;
-        _spawnManager.waveIsActive = false;
-        Debug.Log("Gameover: Wave is active " + _spawnManager.waveIsActive);
+        _spawnManager.WaveActive = false;
     }
 
     //gets called when the start button is clicked on the psuedo title screen. 
@@ -150,6 +149,21 @@ public class GameManager : MonoBehaviour
         UpdateWaveCounter();
     }
 
+    public void RemovePizzaSlices()
+    {
+        pizzaSlices--;
+    }
+
+    public void SetPizzaSlices(int number)
+    {
+        pizzaSlices = number;
+    }
+
+    public int GetPizzaSlices()
+    {
+        return pizzaSlices;
+    }
+
     //Removes one from the active customer list when despawned, and checks if there is less than zero and if so spawns a new wave. 
     public void RemoveCustomer()
     {
@@ -159,8 +173,7 @@ public class GameManager : MonoBehaviour
         if (activeCustomers <= 0)
         {
             activeCustomers = 0; // Sets the active customers to zero if the customer count is below zero.
-            _spawnManager.waveIsActive = false;
-            Debug.Log("Remove Customer:  Wave is active " + _spawnManager.waveIsActive);
+            _spawnManager.WaveActive = false;
             StartCoroutine(WaveCountdownTimer());
         }
     }

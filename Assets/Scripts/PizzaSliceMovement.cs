@@ -39,13 +39,23 @@ public class PizzaSliceMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            Destroy(gameObject);
+        }
+
     }
 
     private void SpawnHappyCustomer(Vector3 spawnLoc, Quaternion rotation) {
         Instantiate(happyCustomerPrefab, spawnLoc, rotation);
     }
 
-    
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
 
-    
+
+
+
 }

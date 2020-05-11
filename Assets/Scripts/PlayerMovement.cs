@@ -81,11 +81,11 @@ public class PlayerMovement : MonoBehaviour
 
             Instantiate(pizzaSlice, firingPoint.transform.position, transform.rotation);
             RemoveSlices();
-            Debug.Log("Slices left: " + _gameManager.pizzaSlices);
         }
     }
 
     // When pizza slice is fired -- spawns the slice equivelant in its place. 
+    //TODO: Re Write this code to be pretty -- PLEASE?
     public void RemoveSlices()
     {
 
@@ -96,33 +96,43 @@ public class PlayerMovement : MonoBehaviour
         childPizza = gameObject.transform.GetChild(3).gameObject;
 
 
-        _gameManager.pizzaSlices--;
-        switch (_gameManager.pizzaSlices)
+        _gameManager.RemovePizzaSlices();
+        switch (_gameManager.GetPizzaSlices())
         {
             case 5:
+                if(!_deliverySystem.GetBiggerHandsReadyToUse())
+                {
+                    Destroy(childPizza);
+                    SpawnPizzaModel(reducedPizzas[0], pizzaPosition, reducedPizzas[0].transform.rotation, pizzaPosition); //5 and 10 slices left
+                    break;
+                }
+                break;
             case 10://10
                 Destroy(childPizza);
                 SpawnPizzaModel(reducedPizzas[0], pizzaPosition, reducedPizzas[0].transform.rotation, pizzaPosition); //5 and 10 slices left
-                Debug.LogWarning("spawned Model: " + reducedPizzas[0].gameObject.name);
                 break;
             case 4:
             case 8://8
                 Destroy(childPizza);
-                if (_deliverySystem.GetCurrentDelivery() == "BIGGER_HANDS" && _deliverySystem.GetBiggerHandsReadyToUse() == true)
+                if (_deliverySystem.GetCurrentDelivery() == "BIGGER_HANDS" && _deliverySystem.GetBiggerHandsReadyToUse() == true && _gameManager.GetPizzaSlices() == 4)
                 {
-                    SpawnPizzaModel(reducedPizzas[3], pizzaPosition, reducedPizzas[3].transform.rotation, pizzaPosition); //TODO Expecting a bug here for 4 on the second go around.  -- Maybe not. 
-                    Debug.LogWarning("spawned Model: " + reducedPizzas[3].gameObject.name);
+                    SpawnPizzaModel(reducedPizzas[3], pizzaPosition, reducedPizzas[3].transform.rotation, pizzaPosition); 
                     break;
                 }
                 SpawnPizzaModel(reducedPizzas[1], pizzaPosition, reducedPizzas[1].transform.rotation, pizzaPosition); // 4 and 8 slices left
-                Debug.LogWarning("spawned Model: " + reducedPizzas[1].gameObject.name);
 
                 break;
             case 3:
+                if(!_deliverySystem.GetBiggerHandsReadyToUse())
+                {
+                    Destroy(childPizza);
+                    SpawnPizzaModel(reducedPizzas[2], pizzaPosition, reducedPizzas[2].transform.rotation, pizzaPosition); // 3 and 6 slices left
+                    break;
+                }
+                break;
             case 6://6
                 Destroy(childPizza);
                 SpawnPizzaModel(reducedPizzas[2], pizzaPosition, reducedPizzas[2].transform.rotation, pizzaPosition); // 3 and 6 slices left
-                Debug.LogWarning("spawned Model: " + reducedPizzas[2].gameObject.name);
 
                 break;
             case 2:
@@ -131,27 +141,24 @@ public class PlayerMovement : MonoBehaviour
                 if (_deliverySystem.GetCurrentDelivery() == "BIGGER_HANDS" && _deliverySystem.GetBiggerHandsReadyToUse() == true)
                 {
                     SpawnPizzaModel(reducedPizzas[4], pizzaPosition, reducedPizzas[4].transform.rotation, pizzaPosition);
-                    Debug.LogWarning("spawned Model: " + reducedPizzas[4].gameObject.name);
                     break;
                 }
                 SpawnPizzaModel(reducedPizzas[3], pizzaPosition, reducedPizzas[3].transform.rotation, pizzaPosition); // 2 and 4 slices left
-                Debug.LogWarning("spawned Model: " + reducedPizzas[3].gameObject.name);
 
                 break;
-            case 1: //2
-                    //case 2:
-                Destroy(childPizza);
-                SpawnPizzaModel(reducedPizzas[4], pizzaPosition, reducedPizzas[4].transform.rotation, pizzaPosition); //1 and 2 slices left
-                Debug.LogWarning("spawned Model: " + reducedPizzas[4].gameObject.name);
-
+            case 1:
+                if (!_deliverySystem.GetBiggerHandsReadyToUse())
+                {
+                    Destroy(childPizza);
+                    SpawnPizzaModel(reducedPizzas[4], pizzaPosition, reducedPizzas[4].transform.rotation, pizzaPosition); //1 and 2 slices left
+                    break;
+                }
                 break;
             case 0:
                 _pizzaAttach.hasPizza = false;
                 Destroy(childPizza);
-                Debug.Log(_deliverySystem.GetBiggerHandsReadyToUse());
                 if (_pizzaAttach.GetNextPizzaBuff() == true && _deliverySystem.GetBiggerHandsReadyToUse() == true)
                 {
-
                     _pizzaAttach.SetNextPizzaBuff(false);
                     _deliverySystem.SetCrateActive(false);
                     _deliverySystem.SetBiggerHandsReadyToUse(false);

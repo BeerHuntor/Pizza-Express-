@@ -45,9 +45,12 @@ public class PizzaAttach : MonoBehaviour
             if (nextPizzaBuff)
             {
                 _deliverySystem.SetBiggerHandsReadyToUse(true);
-                _gameManager.pizzaSlices = 12;
+                _gameManager.SetPizzaSlices(12);
             }
-            _gameManager.pizzaSlices = 6;
+            else
+            {
+                _gameManager.SetPizzaSlices(6);
+            }
         }
     }
 
