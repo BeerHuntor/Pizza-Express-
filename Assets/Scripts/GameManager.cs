@@ -138,9 +138,9 @@ public class GameManager : MonoBehaviour
     }
 
     // updates the health of the counter on the ui. 
-    public void UpdateCounterHealth(int counterHealth)
+    public void UpdateCounterHealth(int health)
     {
-        counterHealthText.text = "Counter Health: " + counterHealth;
+        counterHealthText.text = "Counter Health: " + health;
     }
 
     //Updates the customers. 

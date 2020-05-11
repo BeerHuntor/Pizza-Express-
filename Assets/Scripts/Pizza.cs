@@ -41,7 +41,7 @@ public class Pizza : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         // Destroys pizza when it reaches the bin.
         if(other.gameObject.name == "Bin") {
-
+            Destroy(gameObject);
         }
     }
 

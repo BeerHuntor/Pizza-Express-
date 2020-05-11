@@ -32,8 +32,8 @@ public class HungryCustomerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Counter"))
         {
-            _gameManager.UpdateCounterHealth(_gameManager.counterHealth--);
-            Debug.Log(gameObject.transform.position);
+            _gameManager.counterHealth--;
+            _gameManager.UpdateCounterHealth(_gameManager.counterHealth);
         }
     }
 }

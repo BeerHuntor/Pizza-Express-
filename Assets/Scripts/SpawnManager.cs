@@ -28,8 +28,8 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] bool isFirstWave = true;
     private int lastWave;
     private int customersPerWave;
-    private int minCustomerPerWave = 4;
-    private int maxCustomerPerWave = 7;
+    private int minCustomerPerWave = 3; // 4 
+    private int maxCustomerPerWave = 4; // 7
     private int newWave;
     public bool waveIsActive = false; 
     public int customersThisWave; // variable to access the counting down of the customers per wave in gamemanager. 
@@ -47,27 +47,26 @@ public class SpawnManager : MonoBehaviour {
     void Update()
     {
 
-        //if (waveIsActive)
-        //{
-        //    //Checks if the current time since the start of this game is greater than the spawn timer.
-        //    if (Time.time > pizzaSpawnTimer)
-        //    {
-        //        pizzaSpawnTimer += 3; //TODO Spawn timer rising exponentially causing spawns to slow down find a fix for this! 
-        //        StartCoroutine(SpawnPizza());
-        //    }
-        //}
+        if (waveIsActive)
+        {
+            //Checks if the current time since the start of this game is greater than the spawn timer.
+            if (Time.time > pizzaSpawnTimer)
+            {
+                pizzaSpawnTimer += 3; //TODO Spawn timer rising exponentially causing spawns to slow down find a fix for this! 
+                StartCoroutine(SpawnPizza());
+            }
+        }
 
-        NewDeliveryCrate();
-        _gameManager.DisplayDataOnPress("crate has spawned " + crateSpawned);
+        //NewDeliveryCrate();
+        //_gameManager.DisplayDataOnPress("crate has spawned " + crateSpawned);
     }
 
     //spawns the pizza from the oven. 
     IEnumerator SpawnPizza() {
-        while (waveIsActive)
-        {
+
            yield return new WaitForSeconds(pizzaSpawnTimer);
            Instantiate(pizzaPrefab, pizzaSpawner.transform.position, pizzaPrefab.transform.rotation);
-        }
+
     }
 
     //Spawns the actual customers as specified by the wave logic.
@@ -106,7 +105,6 @@ public class SpawnManager : MonoBehaviour {
 
             // First we update the number of customers, then we spawn the wave.
             _gameManager.UpdateCustomers(newWave);
-            StartCoroutine(SpawnPizza());
             StartCoroutine(SpawnCustomers(newWave));
 
         }
