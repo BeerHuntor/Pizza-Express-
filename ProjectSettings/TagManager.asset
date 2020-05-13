@@ -9,6 +9,7 @@ TagManager:
   - HappyDestination
   - Counter
   - Ground
+  - PizzaSlice
   layers:
   - Default
   - TransparentFX

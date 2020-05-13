@@ -1,17 +1,27 @@
 Pizza-Express-Issue-Development-Tracker: 
 
-10-05-2020 23:22:12:
-☐ Pizza spawn timer growing exponentially allowing for the player to effectivly stop the spawning of the pizzas in between waves. 
-- Look at a better system to implement this instead of update? 
-
-10-05-2020 23:26:12:
-✔ Pizzas from the oven stop deleting after a time not currently known
-☐ @today **FIXED @ 11-05-2020 00:37:07** - (Code error not destroying the gameobject)
-  @done(20-05-11 00:51)
-
-11-05-2020 00:09:08:
-✔ Customers not registering hit on the counter properly and ending the game prematurely  -- Registers the hit on the counter every time but does not subtract from the health. 
-@started(20-05-11 01:05) @done(20-05-11 01:14) @lasted(9m51s)
-
 11-05-2020 12:43:01:
   ☐ When player moves to the bin with the pizza from the oven, it despawns and gives infinate slices
+
+12-05-2020 19:56:54:
+  ☐ Happy customer not triggering collision when entering hungry customers collider to stop the contact and forcing the happy customer off the screen unable to attack and thus making the game unable to be completed. 
+  21:37:49:
+    ☐ AddMoney() is being called twice at the start of the game,  halved the starting amount as a workaround for now -- EDIT:  Halving the money makes the game almost impossible with the current setup and cost of the pizza. 
+    ☐ Firing point of the pizza seems to be slightly to the left of the player -- could be the way the model is instantiated with its rotation. 
+
+
+Archive:
+  10-05-2020 23:22:12:
+  ✔ Pizza spawn timer growing exponentially allowing for the player to effectivly stop the spawning of the pizzas in between waves. 
+  - checked against if the customer list, if the list was not empty - meaning customers not been killed, keep spawning. 
+  @done(20-05-12 18:08) @lasted(40s)
+  
+  
+  10-05-2020 23:26:12:
+  ✔ Pizzas from the oven stop deleting after a time not currently known
+  - @today **FIXED @ 11-05-2020 00:37:07** - (Code error not destroying the gameobject)
+    @done(20-05-11 00:51)
+  
+  11-05-2020 00:09:08:
+  ✔ Customers not registering hit on the counter properly and ending the game prematurely  -- Registers the hit on the counter every time but does not subtract from the health. 
+  @started(20-05-11 01:05) @done(20-05-11 01:14) @lasted(9m51s)

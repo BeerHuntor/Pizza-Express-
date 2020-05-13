@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8449625625329624440}
   m_Layer: 0
   m_Name: mPizzaSlice
-  m_TagString: Untagged
+  m_TagString: PizzaSlice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d13f6b8be49937f4a947a18453237b37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnManagerScript: {fileID: 0}
-  gmScript: {fileID: 0}
+  _spawnManager: {fileID: 0}
+  _gameManager: {fileID: 0}
   happyCustomerPrefab: {fileID: 7064798694757165105, guid: fad410a83a24894449e96285adddda48,
     type: 3}
 --- !u!65 &3374908729944924496

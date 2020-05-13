@@ -3044,10 +3044,7 @@ MonoBehaviour:
     type: 3}
   pizzaPrefab: {fileID: 3193619820815683225, guid: 79926459b8255c448b5d057814a996f5,
     type: 3}
-  dayCount: 0
-  isFirstWave: 1
-  waveIsActive: 0
-  customersThisWave: 0
+  secondsBetweenPizzaSpawns: 3
   pizzaSpawnTimer: 0
 --- !u!4 &1520173197
 Transform:
@@ -3661,19 +3658,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc79bd616d7c5b44893666c9784dc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnManager: {fileID: 0}
-  _playerMovement: {fileID: 0}
   waveText: {fileID: 894018868}
   counterHealthText: {fileID: 845231773}
-  moneyEarned: {fileID: 260347888}
+  moneyText: {fileID: 260347888}
   countdownText: {fileID: 1045666788}
   customersFedText: {fileID: 1815838401}
   gameOverImage: {fileID: 1244771345}
   mainMenuImage: {fileID: 700541948}
   restartButton: {fileID: 733595987}
-  customersFed: 0
-  gameIsRunning: 0
-  pizzaSlices: 0
   counterHealth: 0
 --- !u!4 &1929747411
 Transform:
@@ -3704,6 +3696,7 @@ MonoBehaviour:
   deliveries: []
   activeTime: 5
   currentDelivery: 
+  biggerHandsReadyToUse: 0
   gotDelivery: 0
 --- !u!1 &1985797975
 GameObject:

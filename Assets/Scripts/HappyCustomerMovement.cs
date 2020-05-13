@@ -38,7 +38,7 @@ public class HappyCustomerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_gameManager.gameIsRunning)
+        if (_gameManager.GameIsRunning)
         {
             transform.position = Vector3.MoveTowards(transform.position, happyCustomerLocations[locationIndex].transform.position, movementSpeed * Time.deltaTime);
             transform.LookAt(happyCustomerLocations[locationIndex].transform.position);
@@ -53,6 +53,7 @@ public class HappyCustomerMovement : MonoBehaviour
         //Turns off the collider of the happy customer if collides with another customer. 
         if (other.CompareTag("Customer"))
         {
+            Debug.Log("Collided with customer");
             StartCoroutine(SelectCollider());
         }
     }
@@ -60,7 +61,7 @@ public class HappyCustomerMovement : MonoBehaviour
     IEnumerator SelectCollider()
     {
         gameObject.GetComponent<CapsuleCollider>().enabled = false;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         gameObject.GetComponent<CapsuleCollider>().enabled = true;
     }
 }

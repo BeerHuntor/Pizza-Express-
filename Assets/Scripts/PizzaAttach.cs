@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PizzaAttach : MonoBehaviour
@@ -12,7 +13,12 @@ public class PizzaAttach : MonoBehaviour
 
     [SerializeField] bool nextPizzaBuff; //allows the check to see if the bigger hands buff will activate on the next pizza. 
 
-    public bool hasPizza = false;
+    private bool hasPizza = false;
+    public bool HasPizza
+    {
+        get { return hasPizza; }
+        set { hasPizza = value; }
+    }
     void Awake () 
     {
     }
@@ -23,14 +29,6 @@ public class PizzaAttach : MonoBehaviour
         _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
         player = GameObject.Find("Player");
 
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void OnTriggerEnter(Collider other) {

@@ -1,9 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
-public class SpawnManager : MonoBehaviour {
+public class SpawnManager : MonoBehaviour
+{
 
     public GameObject[] customerSpawns; //Spawn locations of the customers.
     public GameObject customerPrefab; // Customer model. 
@@ -11,10 +16,22 @@ public class SpawnManager : MonoBehaviour {
     public GameObject deliverySpawner; // Spawn location of the delivery crate. 
     public GameObject deliveryCrate; // Delivery Crate
     public GameObject pizzaPrefab; // Pizza model. 
-    public GameObject activeCustomer;
 
+    private List<GameObject> customers = new List<GameObject>();
+    public List<GameObject> Customers
+    {
+        get { return customers; }
+    }
+
+    private List<GameObject> pizzas = new List<GameObject>();
+
+    public List<GameObject> Pizzas
+    {
+        get { return pizzas; }
+    }
 
     private GameManager _gameManager;
+    private DeliverySystem _deliverySystem;
 
     private bool crateSpawned;
 
@@ -37,11 +54,17 @@ public class SpawnManager : MonoBehaviour {
     private int customersThisWave; // variable to access the counting down of the customers per wave in gamemanager
 
     //Spawn timer fot the pizza. 
-    public float pizzaSpawnTimer = 3f;
+    [SerializeField] float secondsBetweenPizzaSpawns = 3f;
+    [SerializeField] float pizzaSpawnTimer = 0f;
+    private float defaultPizzaSpawnTimer;
+
+    private float pizzaCostToPlayer = 3f;
 
     private void Start()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
+        defaultPizzaSpawnTimer = secondsBetweenPizzaSpawns;
     }
 
 
@@ -49,26 +72,29 @@ public class SpawnManager : MonoBehaviour {
     void Update()
     {
 
-        if (WaveActive)
+        if (Customers.Count != 0)
         {
-            //Checks if the current time since the start of this game is greater than the spawn timer.
-            if (Time.time > pizzaSpawnTimer)
+            if (Time.time > pizzaSpawnTimer) // if the time since this frame is more than the value of pizzaspawn timer
             {
-                pizzaSpawnTimer += 3; //TODO Spawn timer rising exponentially causing spawns to slow down find a fix for this! 
-                StartCoroutine(SpawnPizza());
+                pizzaSpawnTimer = Time.time + secondsBetweenPizzaSpawns; //change pizza spawn timer to current time + another X seconds.. 
+                Instantiate(pizzaPrefab, pizzaSpawner.transform.position, pizzaPrefab.transform.rotation);
+                _gameManager.RemoveMoney(pizzaCostToPlayer);
+
             }
         }
-
         NewDeliveryCrate();
         //_gameManager.DisplayDataOnPress("crate has spawned " + crateSpawned);
     }
 
-    //spawns the pizza from the oven. 
-    IEnumerator SpawnPizza() {
 
-        yield return new WaitForSeconds(pizzaSpawnTimer);
-        Instantiate(pizzaPrefab, pizzaSpawner.transform.position, pizzaPrefab.transform.rotation);
+    public void ChangePizzaSpawnTimer(float timeToAdd)
+    {
+        secondsBetweenPizzaSpawns += timeToAdd;
+    }
 
+    public void DefaultPizzaSpawnTimer()
+    {
+        secondsBetweenPizzaSpawns = defaultPizzaSpawnTimer;
     }
 
     //Spawns the actual customers as specified by the wave logic.
@@ -85,17 +111,30 @@ public class SpawnManager : MonoBehaviour {
                 spawnInterval = Random.Range(minSpawnTimer, maxSpawnTimer); //Calculates a spawn timer in between enemy spawns of the wave using random min/max values
 
                 yield return new WaitForSeconds(spawnInterval);
-                Instantiate(customerPrefab, customerSpawns[spawnerIndex].transform.position, customerPrefab.transform.rotation);
-                activeCustomer = GameObject.Find("Z_Hungry_Customer");
-                //get refrence to instantiated object here. 
-            }
+                GameObject spawnedCustomer = Instantiate(customerPrefab, customerSpawns[spawnerIndex].transform.position, customerPrefab.transform.rotation);
+                Customers.Add(spawnedCustomer);
+            } 
+
             isFirstWave = false;
             WaveActive = false;
         }
     }
 
+    public void SpawnExtraCustomers()
+    {
+        int extraCustomers = Random.Range(3, 7);
+
+        for(int i = 0; i < extraCustomers; i++)
+        {
+            int index = Random.Range(0, customerSpawns.Length);
+            GameObject spawnedCustomer = Instantiate(customerPrefab, customerSpawns[index].transform.position, customerPrefab.transform.rotation);
+            Customers.Add(spawnedCustomer);
+        }
+        _gameManager.UpdateCustomers(extraCustomers);
+    }
     //logic for the spawning of the waves of customers and when. 
-    public void SpawnWave() {
+    public void SpawnWave()
+    {
 
         //customerCount = FindObjectsOfType<HungryCustomerMovement>().Length; //Gets the current objects with the hungry customer script active in the scene. 
         if (!WaveActive)
@@ -117,7 +156,7 @@ public class SpawnManager : MonoBehaviour {
     {
         if (!CrateSpawned)
         {
-            if (_gameManager.gameIsRunning && !isFirstWave)
+            if (_gameManager.GameIsRunning && !isFirstWave)
             {
                 if (GameObject.Find("DeliveryCrate(Clone)") == null)
                 {
@@ -147,9 +186,9 @@ public class SpawnManager : MonoBehaviour {
         set { crateSpawned = value; }
     }
 
-    public int DayCount 
+    public int DayCount
     {
-        get { return dayCount;  }    
+        get { return dayCount; }
         set { dayCount = value; }
     }
 
@@ -158,5 +197,5 @@ public class SpawnManager : MonoBehaviour {
         get { return waveIsActive; }
         set { waveIsActive = value; }
     }
-   
+
 }

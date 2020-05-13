@@ -3,34 +3,47 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 
 public class GameManager : MonoBehaviour
 {
-    public SpawnManager _spawnManager;
-    public PlayerMovement _playerMovement;
+    private SpawnManager _spawnManager;
+    private PlayerMovement _playerMovement;
+    private DeliverySystem _deliverySystem;
 
     [Header("Canvas GUI")]
     //TODO canvas UI.
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI counterHealthText;
-    public TextMeshProUGUI moneyEarned;
+    public TextMeshProUGUI moneyText;
     public TextMeshProUGUI countdownText;
     public TextMeshProUGUI customersFedText;
     public RawImage gameOverImage;
     public RawImage mainMenuImage;
     public Button restartButton;
     private Button playButton;
-
-    [SerializeField] int customersFed;
-    [SerializeField] int money; // Money 
-    [SerializeField] bool gameIsPaused;
     private float timeBetweenTextCountdown = 1f;
 
+    private bool gameIsPaused;
+    private int customersFed;
+
+    #region MONEY
+    private float money; // Money 
+    public float Money
+    {
+        get { return money; }
+    }
+    private float startingMoney;
+    #endregion
 
     private int activeCustomers; // Variable to calculate the active customers in the wave
 
-    public bool gameIsRunning = false;
+    private bool gameIsRunning = false;
+    public bool GameIsRunning
+    {
+        get { return gameIsRunning; }
+    }
     private int pizzaSlices;
     public int counterHealth;
     // Start is called before the first frame update
@@ -39,14 +52,17 @@ public class GameManager : MonoBehaviour
 
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
+        _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
+
         playButton = GameObject.Find("PlayButton").GetComponent<Button>();
         playButton.onClick.AddListener(StartGame);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (counterHealth == 0 && gameIsRunning)
+        if ((counterHealth == 0 || money <= 0) && gameIsRunning)
         {
             GameOver();
         }
@@ -77,7 +93,7 @@ public class GameManager : MonoBehaviour
         countdownText.gameObject.SetActive(false);
 
         _spawnManager.SpawnWave();
-        
+
 
     }
 
@@ -104,31 +120,34 @@ public class GameManager : MonoBehaviour
 
 
         pizzaSlices = 0;
-        counterHealth = 5; //? changed this value for testing. 
+        counterHealth = 5;
+        startingMoney = 50f; //TODO Find out why add money is being called twice at the start of the game. 
+
 
         waveText.gameObject.SetActive(true);
         counterHealthText.gameObject.SetActive(true);
-        moneyEarned.gameObject.SetActive(true);
+        moneyText.gameObject.SetActive(true);
 
 
         UpdateCounterHealth(counterHealth);
         UpdateWaveCounter();
+        AddMoney(startingMoney);
 
         StartCoroutine(WaveCountdownTimer()); //? ETHANS CODE
-        _playerMovement.allowMovement = true;
+        _playerMovement.AllowMovement = true;
 
     }
 
     public void PauseGame()
     {
-        Time.timeScale = 0; 
+        Time.timeScale = 0;
     }
 
     public void ResumeGame()
     {
-        Time.timeScale = 1; 
+        Time.timeScale = 1;
     }
-  
+
 
     //Updates the wave counter on the ui.
     public void UpdateWaveCounter()
@@ -145,7 +164,14 @@ public class GameManager : MonoBehaviour
     //Updates the customers. 
     public void UpdateCustomers(int customersRemaining)
     {
-        activeCustomers = customersRemaining;
+        if (_deliverySystem.GetCurrentDelivery() != "OVERTIME")
+        {
+            activeCustomers = customersRemaining;
+        }
+        else
+        {
+            activeCustomers += customersRemaining;
+        }
         UpdateWaveCounter();
     }
 
@@ -163,7 +189,34 @@ public class GameManager : MonoBehaviour
     {
         return pizzaSlices;
     }
+    public void AddMoney(float moneyToAdd)
+    {
+        if (!_deliverySystem.HappyHourActive)
+        {
+            Debug.Log("HappyHour Not Active");
+            Debug.Log(money);
+            money += moneyToAdd;
+            Debug.Log("money to add " + moneyToAdd);
+        } else
+        {
+            Debug.Log("HappyHour active");
+            Debug.Log(money);
+            money += (moneyToAdd * _deliverySystem.HappyHourMultiplier);
+            Debug.Log("Happy Hour Active: " + moneyToAdd + " " + money);
+        }
+        
+        UpdateMoneyCount();
+    }
+    public void RemoveMoney (float moneyToRemove)
+    {
+        money -= moneyToRemove;
+        UpdateMoneyCount();
+    }
 
+    private void UpdateMoneyCount()
+    {
+        moneyText.text = "$ " + (float)Math.Round(money,2);
+    }
     //Removes one from the active customer list when despawned, and checks if there is less than zero and if so spawns a new wave. 
     public void RemoveCustomer()
     {
@@ -191,22 +244,14 @@ public class GameManager : MonoBehaviour
             {
                 ResumeGame();
                 gameIsPaused = false;
-                _playerMovement.allowMovement = true;
+                _playerMovement.AllowMovement = true;
             }
             else
             {
                 PauseGame();
                 gameIsPaused = true;
-                _playerMovement.allowMovement = false;
+                _playerMovement.AllowMovement = false;
             }
-        }
-    }
-
-    //? Debug method
-    public void DisplayDataOnPress(string msg)
-    {
-        if (Input.GetKeyDown(KeyCode.F)) {
-            Debug.Log(msg); 
         }
     }
 }

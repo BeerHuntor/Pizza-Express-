@@ -8,7 +8,7 @@ public class Pizza : MonoBehaviour
     private GameManager _gameManager;
     
 
-    private float speed = 0.8f; 
+    private float movementSpeed = 0.8f;
     public float zMoveLimit = -20.1f;
     // Start is called before the first frame update
     void Start()
@@ -21,17 +21,17 @@ public class Pizza : MonoBehaviour
     void Update()
     {
         //Checking if the game is running, before issueing any movement code.
-        if (_gameManager.gameIsRunning)
+        if (_gameManager.GameIsRunning)
         {
 
             //Pizza Movement from its spawn position. 
             if (!transform.IsChildOf(player.transform)) 
             {
-                transform.Translate(Vector3.back * speed * Time.deltaTime);
+                transform.Translate(Vector3.back * movementSpeed * Time.deltaTime);
                 if (transform.position.z < zMoveLimit)
                 {
                     transform.position = new Vector3(transform.position.x, transform.position.y, zMoveLimit);
-                    transform.Translate(Vector3.left * speed * Time.deltaTime);
+                    transform.Translate(Vector3.left * movementSpeed * Time.deltaTime);
                 }
 
             }
@@ -42,6 +42,7 @@ public class Pizza : MonoBehaviour
         // Destroys pizza when it reaches the bin.
         if(other.gameObject.name == "Bin") {
             Destroy(gameObject);
+            
         }
     }
 

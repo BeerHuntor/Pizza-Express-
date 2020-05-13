@@ -5,7 +5,8 @@ public class DeliveryCrate : MonoBehaviour
     [SerializeField] float speed;
 
     private DeliverySystem _deliverySystem;
-    private SpawnManager _spawnManager; 
+    private SpawnManager _spawnManager;
+    private Rigidbody rigidbody;
 
     private float xMargin; 
     
@@ -14,6 +15,10 @@ public class DeliveryCrate : MonoBehaviour
     {
         _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+
+        rigidbody = gameObject.GetComponent<Rigidbody>();
+
+        rigidbody.mass = 1000;
 
         xMargin = 14f;
         speed = 1f;
@@ -37,13 +42,13 @@ public class DeliveryCrate : MonoBehaviour
         {
             if (!_deliverySystem.GetCrateActive()) //Checks to see if the player already has a delivery active. If not they can get another delivery. 
             {
-
                 Destroy(gameObject);
                 _deliverySystem.GetDelivery();
                 _deliverySystem.SetCrateActive(true);
                 _spawnManager.CrateSpawned = false;
             }
         }
+
     }
 
 }

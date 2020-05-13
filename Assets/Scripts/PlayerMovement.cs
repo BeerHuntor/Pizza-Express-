@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject childPizza;
     private Vector3 pizzaPosition;
 
+    [HideInInspector]
     public List<GameObject> reducedPizzas;
 
     public GameObject pizza;
@@ -29,7 +30,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] float defaultSpeed;
 
-    public bool allowMovement;
+    private bool allowMovement;
+    public bool AllowMovement
+    {
+        get { return allowMovement; }
+        set { allowMovement = value; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
         // Player movement with the mouse cursor. 
-        if (allowMovement && _gameManager.gameIsRunning)
+        if (allowMovement && _gameManager.GameIsRunning)
         {
             float distance;
             runAnim.SetBool("isRunning", true);
@@ -76,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Checks if the player is holding a pizza, and if they are spawns the pizza slice on left mouse button from the firing point game objects position.
-        if (Input.GetMouseButtonDown(0) && _pizzaAttach.hasPizza && _gameManager.gameIsRunning)
+        if (Input.GetMouseButtonDown(0) && _pizzaAttach.HasPizza && _gameManager.GameIsRunning)
         {
 
             Instantiate(pizzaSlice, firingPoint.transform.position, transform.rotation);
@@ -155,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             case 0:
-                _pizzaAttach.hasPizza = false;
+                _pizzaAttach.HasPizza = false;
                 Destroy(childPizza);
                 if (_pizzaAttach.GetNextPizzaBuff() == true && _deliverySystem.GetBiggerHandsReadyToUse() == true)
                 {
@@ -180,36 +186,6 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    //public int GetPizzaModel()
-    //{
-    //    int modelIndex = 0;
-    //    switch (_gameManager.pizzaSlices)
-    //    {
-    //        //0 1 2 3 4 5 6 8 10
-    //        case 5:
-    //            modelIndex = 0;
-    //            break;
-    //        case 4:
-    //            modelIndex = 1;
-    //            break;
-    //        case 3:
-    //            modelIndex = 2;
-    //            break;
-    //        case 2:
-    //            modelIndex = 3;
-    //            break;
-    //        case 1:
-    //            modelIndex = 4;
-    //            break;
-    //        case 0:
-    //            _pizzaAttach.hasPizza = false;
-    //            Debug.Log("Has pizza?: " + _pizzaAttach.hasPizza);
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //    return modelIndex;
-    //}
     //Changes the players movement speed.
     public void ChangeMovementSpeed(float speed)
     {

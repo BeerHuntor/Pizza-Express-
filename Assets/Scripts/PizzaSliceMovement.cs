@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,8 +30,13 @@ public class PizzaSliceMovement : MonoBehaviour
 
                 Destroy(other.gameObject);
                 SpawnHappyCustomer(other.transform.position, other.transform.rotation);
-                _gameManager.RemoveCustomer(); //removes a customer from the active customer list. 
+                _gameManager.RemoveCustomer(); //removes a customer from the active customer count
+                _spawnManager.Customers.Remove(other.gameObject); //Removes the customer from the customers list. 
+                Debug.Log(_spawnManager.Customers.Count);
                 Destroy(gameObject);
+                float sliceCost = UnityEngine.Random.Range(1.5f, 4f);
+                _gameManager.AddMoney(sliceCost);  
+
             }
         }
 
@@ -46,10 +52,12 @@ public class PizzaSliceMovement : MonoBehaviour
 
     }
 
+    //method to spawn customers. 
     private void SpawnHappyCustomer(Vector3 spawnLoc, Quaternion rotation) {
         Instantiate(happyCustomerPrefab, spawnLoc, rotation);
     }
 
+    // Destroys slices when out of camera view. 
     private void OnBecameInvisible()
     {
         Destroy(gameObject);
