@@ -6,7 +6,8 @@ public class Pizza : MonoBehaviour
 {
     private GameObject player;
     private GameManager _gameManager;
-    
+
+    private PizzaAttach _pizzaAttach;
 
     private float movementSpeed = 0.8f;
     public float zMoveLimit = -20.1f;
@@ -14,6 +15,7 @@ public class Pizza : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
+        _pizzaAttach = player.GetComponent<PizzaAttach>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
@@ -41,8 +43,13 @@ public class Pizza : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         // Destroys pizza when it reaches the bin.
         if(other.gameObject.name == "Bin") {
+            if(this.gameObject.transform.parent != null)
+            {
+                _pizzaAttach.HasPizza = false;
+                
+            }
             Destroy(gameObject);
-            
+
         }
     }
 

@@ -9,4 +9,4 @@ still in early development, but planned features include:
 * Quirky boost system. 
 * Highscores
 
-Play a very early version at: https://connect.unity.com/mg/other/pizza-express
+Play a very early version at: https://connect.unity.com/p/pizza-express-1

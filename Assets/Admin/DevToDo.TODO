@@ -21,14 +21,50 @@ Task list for daily development..
         
         
 13-05-2020:         
-    ☐ Model And Texture The Delivery Box
-    ☐ Stop the player from playing the animation when stopped. 
-        UI ArtWork:
-            ☐ Zombie / Customer Head to represent customer count.
-            ☐ Counter Bar Representation. 
-            ☐ Money representation
-            ☐ Icons for each delivery
+    ✔ Stop the player from playing the animation when stopped. @started(20-05-13 19:33) @done(20-05-13 20:50) @lasted(1h17m55s)
+    - Not completley finished.. Player bugs out switching between animations after colliding with an object. -- Issue tracked.  
+    ✔ Fix delivery system,  Make sure each delivery has reversed the crateActive to false. @started(20-05-13 17:42) @done(20-05-13 19:15) @lasted(1h33m34s)
+    ✔ Fixed the issue where player would destory pizza via the bin and have infinate slices @done(20-05-13 21:20)
+       
+    
+14-05-2020:
+    UI ArtWork:
+            ✔ Zombie / Customer Head to represent customer count. @started(20-05-13 21:28) -- Stopped for bed at 1am resumed 11am @done(20-05-14 19:19) 
+            ✔ Counter Bar Representation. @done(20-05-14 19:19) Inc Above  @lasted(21h51m56s)
+            ✔ Implement Zombie Icon in game @done(20-05-14 20:09)
+            ✔ Implement counter health icon in game. @done(20-05-14 20:09)
 
         
+15-05-2020:
+    UI Artwork:
+        ✔ RushHour Delivery Icon @done(20-05-15 23:36)
+        ✔ Cash Flow Delivery Icon @done(20-05-15 23:36)
+        ✔ Windfall Delivery Icon @done(20-05-15 23:36)
+        ✔ Overtime Delivery Icon @done(20-05-15 23:36)
 
-    
+
+16-05-2020:
+    UI ArtWork:
+        ✔ Money Representation @done(20-05-16 22:23)
+        ✔ Bigger Hands Delivery Icon @done(20-05-16 22:23)
+        ✔ Time Is Dragging Delivery Icon @done(20-05-16 22:23)
+        ✔ Create and design note to be used at particles when customers are fed @done(20-05-16 22:27)
+        
+17-05-2020: 
+    UI Artwork:   
+        ✔ Complete rework of title screen @done(20-05-17 14:28)
+        ✔ Add how to play screen @done(20-05-17 14:28)
+        ✔ Deisgn and rework game over screen @done(20-05-17 14:28) -- Alltold 50 mins
+        ☐ Money Earned stat on game over screen.
+        Other Art:
+        ☐ Model Delivery Box
+        ☐ Create texture for delivery box
+        Unity:
+        ✔ Import all new assets into unity @done(20-05-17 15:08)
+        ✔ Add Money UI Icon to the UI @started(20-05-17 15:09) @done(20-05-17 15:34) @lasted(25m43s)
+        ✔ Add delivery icons to show up when player has delivery active. @started(20-05-17 15:43) @done(20-05-17 18:44) @lasted(3h1m44s) - Minus 40 mins break
+            UI:
+                ✔ New title screen @started(20-05-17 18:45) @done(20-05-17 20:21) @lasted(1h36m41s)
+                ✔ New How to play screen @done(20-05-17 20:21)
+                ✔ New Gameover screen @started(20-05-17 20:21) @done(20-05-17 21:04) @lasted(43m54s)
+        ☐ Implement Particle System when customers fed

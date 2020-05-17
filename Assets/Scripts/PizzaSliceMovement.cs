@@ -32,7 +32,6 @@ public class PizzaSliceMovement : MonoBehaviour
                 SpawnHappyCustomer(other.transform.position, other.transform.rotation);
                 _gameManager.RemoveCustomer(); //removes a customer from the active customer count
                 _spawnManager.Customers.Remove(other.gameObject); //Removes the customer from the customers list. 
-                Debug.Log(_spawnManager.Customers.Count);
                 Destroy(gameObject);
                 float sliceCost = UnityEngine.Random.Range(1.5f, 4f);
                 _gameManager.AddMoney(sliceCost);  

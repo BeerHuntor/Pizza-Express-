@@ -83,7 +83,6 @@ public class SpawnManager : MonoBehaviour
             }
         }
         NewDeliveryCrate();
-        //_gameManager.DisplayDataOnPress("crate has spawned " + crateSpawned);
     }
 
 
@@ -131,6 +130,8 @@ public class SpawnManager : MonoBehaviour
             Customers.Add(spawnedCustomer);
         }
         _gameManager.UpdateCustomers(extraCustomers);
+        Debug.LogWarning("Spawned Extra Customers");
+
     }
     //logic for the spawning of the waves of customers and when. 
     public void SpawnWave()

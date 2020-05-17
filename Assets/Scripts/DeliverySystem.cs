@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class DeliverySystem : MonoBehaviour
 {
-    [SerializeField] List<string> deliveries = new List<string>();
+    [SerializeField] string[] deliveries;
     [SerializeField] float activeTime = 5f;
     [SerializeField] string currentDelivery;
     [SerializeField] bool biggerHandsReadyToUse;
-    public bool gotDelivery;
+    [SerializeField] bool gotDelivery;
 
     private PlayerMovement _playerMovement;
     private PizzaAttach _pizzaAttach;
@@ -33,24 +33,22 @@ public class DeliverySystem : MonoBehaviour
         _pizzaAttach = GameObject.Find("Player").GetComponent<PizzaAttach>();
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        deliveries.Add("ENERGIZED"); //Speeds up the player randomly 
-        deliveries.Add("BIGGER_HANDS"); // double pizza stack
-        deliveries.Add("RUSH_HOUR"); // quicker customers
-        deliveries.Add("TIME_IS_DRAGGING"); //slower customers / slower player / slower pizzas
-        deliveries.Add("OVERTIME"); //more customers in this wave
-        deliveries.Add("WINDFALL"); //Stack of cash.
-        deliveries.Add("HAPPY_HOUR"); //Double money earned.
-    }
-    public void Update()
-    {
-        
+        deliveries = new string[] { "ENERGIZED", "DOUBLE_SLICES", "RUSH_HOUR", "TIME_IS_DRAGGING", "OVERTIME", "WINDFALL", "CASHFLOW", };
+        //deliveries.("ENERGIZED"); //Speeds up the player randomly 
+        //deliveries.Add("DOUBLE_SLICES"); // double pizza stack
+        //deliveries.Add("RUSH_HOUR"); // quicker customers
+        //deliveries.Add("TIME_IS_DRAGGING"); //slower customers / slower player / slower pizzas
+        //deliveries.Add("OVERTIME"); //more customers in this wave
+        //deliveries.Add("WINDFALL"); //Stack of cash.
+        //deliveries.Add("HAPPY_HOUR"); //Double money earned.
     }
     // Gets the current delivery at random from a list of set deliveries.
     public void GetDelivery ()
     {
-        int deliveryIndex = Random.Range(0, deliveries.Count);
+        int deliveryIndex = Random.Range(0, deliveries.Length);
 
         currentDelivery = deliveries[deliveryIndex];
+        _gameManager.ShowDeliveryIcon(currentDelivery);
         ExecuteDelivery();
     }
 
@@ -62,8 +60,8 @@ public class DeliverySystem : MonoBehaviour
             case "ENERGIZED":
                 StartCoroutine(Energized());
                 break;
-            case "BIGGER_HANDS":
-                BiggerHands();
+            case "DOUBLE_SLICES":
+                DoubleSlices();
                 break;
             case "RUSH_HOUR":
                 StartCoroutine(RushHour());
@@ -72,22 +70,16 @@ public class DeliverySystem : MonoBehaviour
                 StartCoroutine(TimeIsDragging());
                 break;
             case "OVERTIME":
-                OverTime();
+                StartCoroutine(OverTime());
                 break;
             case "WINDFALL":
                 WindFall();
                 break;
-            case "HAPPY_HOUR":
-                StartCoroutine(HappyHour());
+            case "CASHFLOW":
+                StartCoroutine(Cashflow());
                 break;
 
         }
-    }
-
-    //Setter for crate active bool
-    public void SetCrateActive(bool isCrateActive)
-    {
-        gotDelivery = isCrateActive; 
     }
 
     //getter for crate active bool
@@ -95,7 +87,18 @@ public class DeliverySystem : MonoBehaviour
     {
         return gotDelivery;
     }
+    public  void StartCrateStatus()
+    {
+        StartCoroutine(SetCrateStatus());
+    }
 
+    private IEnumerator SetCrateStatus()
+    {
+        gotDelivery = true;
+        Debug.LogWarning(activeTime);
+        yield return new WaitForSeconds(activeTime);
+        gotDelivery = false;
+    }
     public string GetCurrentDelivery()
     {
         return currentDelivery;
@@ -103,18 +106,20 @@ public class DeliverySystem : MonoBehaviour
     // Code for the energized delivery
     private IEnumerator Energized()
     {
+        Debug.LogWarning("Energized Activated!");
         float speedChange = Random.Range(0.4f, 1f);
         _playerMovement.ChangeMovementSpeed(speedChange);
 
         yield return new WaitForSeconds(activeTime);
         _playerMovement.SetDefaultSpeed();
-        SetCrateActive(false);
+        _gameManager.HideDeliveryIcon();
     }
 
-    #region BIGGER HANDS
+    #region DOUBLESLICES
     // Code for the bigger hands delivery
-    private void BiggerHands()
+    private void DoubleSlices()
     {
+        Debug.LogWarning("Bigger Hands Activated!");
         _pizzaAttach.SetNextPizzaBuff(true);
 
     }
@@ -136,6 +141,7 @@ public class DeliverySystem : MonoBehaviour
     //Code for RushHour Delivery.
     private IEnumerator RushHour ()
     {
+        Debug.LogWarning("RushHour Activated!");
         float speedChange = Random.Range(0.5f, 1f);
         foreach (GameObject obj in _spawnManager.Customers)
         {
@@ -150,14 +156,14 @@ public class DeliverySystem : MonoBehaviour
             HungryCustomerMovement script = obj.GetComponent<HungryCustomerMovement>();
             script.SetDefaultSpeed();
         }
-        SetCrateActive(false);
-        //_hungryCustomerMovement.SetDefaultSpeed();
+        _gameManager.HideDeliveryIcon();
 
     }
 
     //Code for Time Is Dragging Delivery. 
     private IEnumerator TimeIsDragging()
     {
+        Debug.LogWarning("TimeIsDragging Activated");
         float playerSpeedChange = Random.Range(1f, 2f);
         float pizzaSpawnTimerChange = Random.Range(0.5f, 1.5f);
         float customerSpeedChange = Random.Range(0.2f, 0.5f);
@@ -181,29 +187,37 @@ public class DeliverySystem : MonoBehaviour
             script.SetDefaultSpeed();
         }
         _playerMovement.SetDefaultSpeed();
-        SetCrateActive(false);
+        _gameManager.HideDeliveryIcon();
 
     }
 
     //Code for overtime delivery. 
-    private void OverTime()
+    private IEnumerator OverTime()
     {
+        Debug.LogWarning("OverTime Activated.");
         _spawnManager.SpawnExtraCustomers();
-        SetCrateActive(false);
+
+        yield return new WaitForSeconds(activeTime);
+        _gameManager.HideDeliveryIcon();
     }
-    //Code for Cash Flow Delivery
-    private void WindFall()
+    //Code for windfall Delivery
+    private IEnumerator WindFall()
     {
+        Debug.LogWarning("WindFall Activated");
         float cashInjection = Random.Range(100f, 200f);
         _gameManager.AddMoney(cashInjection);
-    }
-    //Code for Happy Hour Delivery.
-    private IEnumerator HappyHour()
-    {
-        happyHour = true;
         yield return new WaitForSeconds(activeTime);
+        _gameManager.HideDeliveryIcon();
+    }
+    //Code for cashflow Delivery.
+    private IEnumerator Cashflow()
+    {
+        Debug.LogWarning("Happy Hour Activated!");
+        happyHour = true;
 
+        yield return new WaitForSeconds(activeTime);
         happyHour = false;
+        _gameManager.HideDeliveryIcon();
     }
 
     

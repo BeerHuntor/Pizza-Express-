@@ -4,7 +4,10 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
-
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using UnityEngine.EventSystems;
+using System.Reflection;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,18 +15,40 @@ public class GameManager : MonoBehaviour
     private PlayerMovement _playerMovement;
     private DeliverySystem _deliverySystem;
 
-    [Header("Canvas GUI")]
-    //TODO canvas UI.
-    public TextMeshProUGUI waveText;
-    public TextMeshProUGUI counterHealthText;
-    public TextMeshProUGUI moneyText;
-    public TextMeshProUGUI countdownText;
-    public TextMeshProUGUI customersFedText;
-    public RawImage gameOverImage;
-    public RawImage mainMenuImage;
-    public Button restartButton;
-    private Button playButton;
+    [Header("Gameplay UI")]
+    [SerializeField] TextMeshProUGUI customersRemainingText;
+    [SerializeField] TextMeshProUGUI counterHealthText;
+    [SerializeField] TextMeshProUGUI moneyText;
+    [SerializeField] TextMeshProUGUI countdownText;
+    [SerializeField] RawImage customersRemainingIcon;
+    [SerializeField] RawImage counterHealthIcon;
+    [SerializeField] RawImage moneyEarnedIcon;
     private float timeBetweenTextCountdown = 1f;
+
+    [Header("Game States UI")]
+    [SerializeField] RawImage mainMenuImage;
+    [SerializeField] RawImage feedTheHordeText;
+    [SerializeField] Button howToPlayButton;
+    [SerializeField] Button playButton;
+
+    [Header("HowToPlay")]
+    [SerializeField] RawImage howToPlayImage;
+    [SerializeField] Button mainMenuArrow;
+
+    [Header("GameOver")]
+    [SerializeField] RawImage gameOverImage;
+    [SerializeField] Button restartButton;
+    [SerializeField] TextMeshProUGUI dayCountText;
+    [SerializeField] TextMeshProUGUI customersFedText;
+    
+
+    [Header("DeliverySystemIcons")]
+    [SerializeField] List<GameObject> deliveryIcons = new List<GameObject>();
+
+
+    private float iconXPos = 360f;
+    private float iconYPos = -180f;
+    private Vector2 deliveryIconNotification;
 
     private bool gameIsPaused;
     private int customersFed;
@@ -45,7 +70,12 @@ public class GameManager : MonoBehaviour
         get { return gameIsRunning; }
     }
     private int pizzaSlices;
-    public int counterHealth;
+    private int counterHealth;
+    public int CounterHealth
+    {
+        get { return counterHealth; }
+        set { counterHealth = value; }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -54,9 +84,9 @@ public class GameManager : MonoBehaviour
         _playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
 
-        playButton = GameObject.Find("PlayButton").GetComponent<Button>();
-        playButton.onClick.AddListener(StartGame);
-
+        deliveryIconNotification = new Vector2(iconXPos, iconYPos);
+        //playButton.onClick.AddListener(StartGame);
+        SetMainMenuActive(true);
     }
 
     // Update is called once per frame
@@ -67,45 +97,23 @@ public class GameManager : MonoBehaviour
             GameOver();
         }
 
-        InGameStates();
+        PauseMenu();
     }
 
-    //Counts down the counter in between waves. 
-    public IEnumerator WaveCountdownTimer()
-    {
-        if (_spawnManager.DayCount == 0)
-        {
-            _spawnManager.DayCount = 1;
-        }
-        countdownText.gameObject.SetActive(true);
-        countdownText.text = "Day " + _spawnManager.DayCount;
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "Ready?";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "3";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "2";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "1";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "GO!";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.gameObject.SetActive(false);
-
-        _spawnManager.SpawnWave();
-
-
-    }
-
+    //Calls game over. 
     void GameOver()
     {
         gameOverImage.gameObject.SetActive(true);
         customersFedText.gameObject.SetActive(true);
+        dayCountText.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(true);
 
-        customersFedText.text = "Customers Fed: " + customersFed;
+        SetMainUIActive(false);
 
-        restartButton.onClick.AddListener(GameReload);
+        customersFedText.text = customersFed.ToString();
+        dayCountText.text = _spawnManager.DayCount.ToString();
+
+        //restartButton.onClick.AddListener(GameReload);
         gameIsRunning = false;
         _spawnManager.WaveActive = false;
     }
@@ -114,20 +122,14 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         gameIsRunning = true;
-        ////Removes button and title screen. 
-        playButton.gameObject.SetActive(false);
-        mainMenuImage.gameObject.SetActive(false);
 
+        SetMainMenuActive(false);
 
         pizzaSlices = 0;
-        counterHealth = 5;
-        startingMoney = 50f; //TODO Find out why add money is being called twice at the start of the game. 
+        counterHealth = 55;
+        startingMoney = 50.00f; //TODO Find out why add money is being called twice at the start of the game. 
 
-
-        waveText.gameObject.SetActive(true);
-        counterHealthText.gameObject.SetActive(true);
-        moneyText.gameObject.SetActive(true);
-
+        SetMainUIActive(true);
 
         UpdateCounterHealth(counterHealth);
         UpdateWaveCounter();
@@ -137,6 +139,7 @@ public class GameManager : MonoBehaviour
         _playerMovement.AllowMovement = true;
 
     }
+    //Shows the delivery icon on screen when collected delivery
 
     public void PauseGame()
     {
@@ -148,17 +151,113 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    //public void GameReload()
+    //{
+    //    SceneManager.LoadScene(0);
+    //}
 
+
+    //PauseMenu
+    public void PauseMenu()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
+        {
+            if (gameIsPaused)
+            {
+                ResumeGame();
+                gameIsPaused = false;
+                _playerMovement.AllowMovement = true;
+            }
+            else
+            {
+                PauseGame();
+                gameIsPaused = true;
+                _playerMovement.AllowMovement = false;
+            }
+        }
+    }
+    public void SetMainMenuActive(bool b)
+    {
+        //Dispaly main menu screen
+        mainMenuImage.gameObject.SetActive(b);
+        feedTheHordeText.gameObject.SetActive(b);
+        playButton.gameObject.SetActive(b);
+        howToPlayButton.gameObject.SetActive(b);
+    }
+
+    private void SetMainUIActive (bool b)
+    {
+        customersRemainingIcon.gameObject.SetActive(b);
+        customersRemainingText.gameObject.SetActive(b);
+        counterHealthIcon.gameObject.SetActive(b);
+        counterHealthText.gameObject.SetActive(b);
+        moneyEarnedIcon.gameObject.SetActive(b);
+        moneyText.gameObject.SetActive(b);
+    }
+    public void SetHowToPlayActive(bool b)
+    {
+        //display how to play screen. 
+        howToPlayImage.gameObject.SetActive(b);
+        mainMenuArrow.gameObject.SetActive(b);
+    }
+    private void OnPointerHover(PointerEventData pointerHoverEvent)
+    {
+        if (pointerHoverEvent.hovered.Contains(GameObject.Find("Play"))){
+            playButton.animator.SetTrigger("Highlighted");
+        }
+    }
+
+    //Counts down the counter in between waves. 
+    public IEnumerator WaveCountdownTimer()
+    {
+        if (_spawnManager.DayCount == 0)
+        {
+            _spawnManager.DayCount = 1;
+        }
+        countdownText.gameObject.SetActive(true);
+        countdownText.text = "day " + _spawnManager.DayCount;
+        yield return new WaitForSeconds(timeBetweenTextCountdown);
+        countdownText.text = "ready?";
+        yield return new WaitForSeconds(timeBetweenTextCountdown);
+        countdownText.text = "3";
+        yield return new WaitForSeconds(timeBetweenTextCountdown);
+        countdownText.text = "2";
+        yield return new WaitForSeconds(timeBetweenTextCountdown);
+        countdownText.text = "1";
+        yield return new WaitForSeconds(timeBetweenTextCountdown);
+        countdownText.text = "go!";
+        yield return new WaitForSeconds(timeBetweenTextCountdown);
+        countdownText.gameObject.SetActive(false);
+
+        _spawnManager.SpawnWave();
+
+
+    }
+
+    public void ShowDeliveryIcon(string iconName)
+    {
+        GameObject icon =  deliveryIcons.Find(x => x.name == iconName);
+        icon.SetActive(true);
+        icon.transform.position = deliveryIconNotification;
+    }
+    //hides delivery icon when delivery is completed. 
+    public void HideDeliveryIcon()
+    {
+        foreach (GameObject icon in deliveryIcons)
+        {
+            icon.SetActive(false);
+        }
+    }
     //Updates the wave counter on the ui.
     public void UpdateWaveCounter()
     {
-        waveText.text = "Customers Remaining: " + activeCustomers;
+        customersRemainingText.text = activeCustomers.ToString();
     }
 
     // updates the health of the counter on the ui. 
     public void UpdateCounterHealth(int health)
     {
-        counterHealthText.text = "Counter Health: " + health;
+        counterHealthText.text =  health.ToString();
     }
 
     //Updates the customers. 
@@ -193,16 +292,10 @@ public class GameManager : MonoBehaviour
     {
         if (!_deliverySystem.HappyHourActive)
         {
-            Debug.Log("HappyHour Not Active");
-            Debug.Log(money);
             money += moneyToAdd;
-            Debug.Log("money to add " + moneyToAdd);
         } else
         {
-            Debug.Log("HappyHour active");
-            Debug.Log(money);
             money += (moneyToAdd * _deliverySystem.HappyHourMultiplier);
-            Debug.Log("Happy Hour Active: " + moneyToAdd + " " + money);
         }
         
         UpdateMoneyCount();
@@ -215,7 +308,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateMoneyCount()
     {
-        moneyText.text = "$ " + (float)Math.Round(money,2);
+        moneyText.text = "" + (float)Math.Round(money, 2) ;
     }
     //Removes one from the active customer list when despawned, and checks if there is less than zero and if so spawns a new wave. 
     public void RemoveCustomer()
@@ -228,30 +321,6 @@ public class GameManager : MonoBehaviour
             activeCustomers = 0; // Sets the active customers to zero if the customer count is below zero.
             _spawnManager.WaveActive = false;
             StartCoroutine(WaveCountdownTimer());
-        }
-    }
-
-    public void GameReload()
-    {
-        SceneManager.LoadScene(0);
-    }
-    //For keypresses in the game. 
-    public void InGameStates()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
-        {
-            if (gameIsPaused)
-            {
-                ResumeGame();
-                gameIsPaused = false;
-                _playerMovement.AllowMovement = true;
-            }
-            else
-            {
-                PauseGame();
-                gameIsPaused = true;
-                _playerMovement.AllowMovement = false;
-            }
         }
     }
 }

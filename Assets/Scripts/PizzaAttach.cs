@@ -44,6 +44,7 @@ public class PizzaAttach : MonoBehaviour
             {
                 _deliverySystem.SetBiggerHandsReadyToUse(true);
                 _gameManager.SetPizzaSlices(12);
+                //_deliverySystem.SetCrateActive(false);
             }
             else
             {
