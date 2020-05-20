@@ -413,3 +413,5 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 *.psd
 *.meta
+/Assets/Animations/fed_particle_anim.anim
+/Assets/Animations/FedParticle.controller

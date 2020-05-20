@@ -57,3 +57,13 @@ Daily Development Log 2020:
         - Deisgned and implemented new game over screen with animation -- added daycount as a stat tracker on the game over screen.
         - Completed design and implementation of how to play screen.  Now has a tutorial that points back to the main menu. 
         - Did some general code cleanup, serialized ui variables -- made it easier to activate / deactivate different ui elements. 
+
+**19-05-2020**
+    **Pizza Express**
+        - Modeled and textured the delivery crate - used blender to sculpt the detail and used multi resolution glitch to bake texture onto low poly model. 
+        - Re textured the pizza's to resemble from the same texture
+        - Reset the pizza attributes in unity, had to reset the transforms and references to them.
+        - Livestreamed the process for 8 hours. 
+        - Implemented a very crude particle system that shows up behind the money UI when a customer is fed.  Not particularly happy with it.
+        - Added despawner empty underneath the ground platform in an attempt to despawn the pizza slices, some reason OnBecomeInvisible() was no longer being called. 
+        - Fixed happy customers collider box's not turning off when they hit hungry customers. 

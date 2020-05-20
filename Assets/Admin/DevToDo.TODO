@@ -55,16 +55,32 @@ Task list for daily development..
         ✔ Complete rework of title screen @done(20-05-17 14:28)
         ✔ Add how to play screen @done(20-05-17 14:28)
         ✔ Deisgn and rework game over screen @done(20-05-17 14:28) -- Alltold 50 mins
-        ☐ Money Earned stat on game over screen.
-        Other Art:
-        ☐ Model Delivery Box
-        ☐ Create texture for delivery box
+        ✔ Money Earned stat on game over screen. @done(20-05-17 21:14)
         Unity:
         ✔ Import all new assets into unity @done(20-05-17 15:08)
         ✔ Add Money UI Icon to the UI @started(20-05-17 15:09) @done(20-05-17 15:34) @lasted(25m43s)
         ✔ Add delivery icons to show up when player has delivery active. @started(20-05-17 15:43) @done(20-05-17 18:44) @lasted(3h1m44s) - Minus 40 mins break
-            UI:
-                ✔ New title screen @started(20-05-17 18:45) @done(20-05-17 20:21) @lasted(1h36m41s)
-                ✔ New How to play screen @done(20-05-17 20:21)
-                ✔ New Gameover screen @started(20-05-17 20:21) @done(20-05-17 21:04) @lasted(43m54s)
-        ☐ Implement Particle System when customers fed
+        UI:
+        ✔ New title screen @started(20-05-17 18:45) @done(20-05-17 20:21) @lasted(1h36m41s)
+        ✔ New How to play screen @done(20-05-17 20:21)
+        ✔ New Gameover screen @started(20-05-17 20:21) @done(20-05-17 21:04) @lasted(43m54s)
+
+19-05-2020:
+    Unity:    
+         ✔ Implement Particle System when customers fed @done(20-05-20 00:04) @lasted(2hr)
+    Other Art:
+        ✔ Model Delivery Box @done(20-05-19 18:46)
+        ✔ Create texture for delivery box @done(20-05-19 18:46) @lasted(4h)
+        ✔ Create and retexture pizza's @done(20-05-19 21:05) @lasted(2hr)
+
+20-05-2020:
+    Sound:
+        ☐ Find / Create sounds for various things happening in game
+            ☐ Customers Fed
+            ☐ Delivery incoming
+            ☐ Voice Overs for deliveries active. 
+        ☐ Sound track ?? if your competent enough ... your not! 
+    Unity: 
+        ☐ Implememnt a  UI manager to keep the game manager for game stuff only.  All ui calls go through UI manager. 
+    Other:
+        ☐ How to play screen has spelling mistakes, need to go through them and rectify them before release. 

@@ -178,7 +178,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 20.35
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -247,13 +247,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 147.92313, w: 0}
   m_textInfo:
     textComponent: {fileID: 101661190}
-    characterCount: 0
+    characterCount: 5
     spriteCount: 0
     spaceCount: 0
-    wordCount: 0
+    wordCount: 2
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -3295,7 +3295,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 22e9b9d2a3569544ba319ed279ec72fc, type: 2}
+  - {fileID: 2100000, guid: df2679bdb1852db44a464c35f1ad5573, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3830,9 +3830,9 @@ MonoBehaviour:
     type: 3}
   pizzaSpawner: {fileID: 1755811460}
   deliverySpawner: {fileID: 1359903587}
-  deliveryCrate: {fileID: 3535460790063365241, guid: e1f369f0cca00b849b0464d3905dd574,
+  deliveryCrate: {fileID: 5640124299286729680, guid: eb9d950e30258dd43b703fbc8e1a149a,
     type: 3}
-  pizzaPrefab: {fileID: 3193619820815683225, guid: 79926459b8255c448b5d057814a996f5,
+  pizzaPrefab: {fileID: 6961990584977342669, guid: 236b12232ba737342b90b8fc762eab13,
     type: 3}
   secondsBetweenPizzaSpawns: 3
   pizzaSpawnTimer: 0
@@ -5573,43 +5573,43 @@ PrefabInstance:
         type: 3}
       propertyPath: pizza
       value: 
-      objectReference: {fileID: 3193619820815683225, guid: 79926459b8255c448b5d057814a996f5,
+      objectReference: {fileID: 6961990584977342669, guid: 236b12232ba737342b90b8fc762eab13,
         type: 3}
     - target: {fileID: 3184738710883980638, guid: 420837df0545708458dd22f0b828b9a6,
         type: 3}
       propertyPath: pizzaSlice
       value: 
-      objectReference: {fileID: 6086215898644234448, guid: fa0b72e500b648849af80af52f2b12aa,
+      objectReference: {fileID: 4488602740744971166, guid: b3b69d1f56776f641bf5fdf14aab6319,
         type: 3}
     - target: {fileID: 3184738710883980638, guid: 420837df0545708458dd22f0b828b9a6,
         type: 3}
       propertyPath: reducedPizzas.Array.data[0]
       value: 
-      objectReference: {fileID: 7782979108200649323, guid: b27166beef8267049ba2211bdd83d14a,
+      objectReference: {fileID: 6367418383012333107, guid: 267d28e2511beb443bc6a748f0c74389,
         type: 3}
     - target: {fileID: 3184738710883980638, guid: 420837df0545708458dd22f0b828b9a6,
         type: 3}
       propertyPath: reducedPizzas.Array.data[1]
       value: 
-      objectReference: {fileID: 1308363886979520264, guid: a43ebcc374e152c4a99d5ebcf6489f5e,
+      objectReference: {fileID: 1208048502918414184, guid: d5db3514aaa29eb4199954b1dc8797b8,
         type: 3}
     - target: {fileID: 3184738710883980638, guid: 420837df0545708458dd22f0b828b9a6,
         type: 3}
       propertyPath: reducedPizzas.Array.data[2]
       value: 
-      objectReference: {fileID: 7579988952256416481, guid: bf138d012cb52d544abae72b39094a60,
+      objectReference: {fileID: 6771956658077522868, guid: c36f7fa11094b2847b22d9add07bb53e,
         type: 3}
     - target: {fileID: 3184738710883980638, guid: 420837df0545708458dd22f0b828b9a6,
         type: 3}
       propertyPath: reducedPizzas.Array.data[3]
       value: 
-      objectReference: {fileID: 6914426543125939200, guid: e6887617475f534468e57e1cc962712a,
+      objectReference: {fileID: 299847392553601343, guid: 03074cbe412953f43bcdbd9d6bc60c5c,
         type: 3}
     - target: {fileID: 3184738710883980638, guid: 420837df0545708458dd22f0b828b9a6,
         type: 3}
       propertyPath: reducedPizzas.Array.data[4]
       value: 
-      objectReference: {fileID: 4219892603987603043, guid: c0752f9f1b6330046bb3ddafc147e1d6,
+      objectReference: {fileID: 5393120743362494799, guid: c0752f9f1b6330046bb3ddafc147e1d6,
         type: 3}
     - target: {fileID: 3184738710966131016, guid: 420837df0545708458dd22f0b828b9a6,
         type: 3}
