@@ -16,13 +16,13 @@ public class PlayerMovement : MonoBehaviour
     private GameObject childPizza;
     private Vector3 pizzaPosition;
 
-    public List<GameObject> reducedPizzas;
+    [SerializeField] List<GameObject> reducedPizzas;
 
     public GameObject pizza;
     public GameObject pizzaSlice;
     private GameObject firingPoint;
 
-    public Animator anim;
+    private Animator anim;
 
     private float leftScreenBounds = -14.5f; // Bounds of camera to the left the player can move to 
 

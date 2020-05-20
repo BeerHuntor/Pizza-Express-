@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class PizzaSliceMovement : MonoBehaviour
 {
-    public SpawnManager _spawnManager;
-    public GameManager _gameManager; 
-    public GameObject happyCustomerPrefab;
+    private SpawnManager _spawnManager;
+    private GameManager _gameManager; 
+    [SerializeField] GameObject happyCustomerPrefab;
+    [SerializeField] GameObject fedParticle; 
     private Rigidbody sliceRb;
     private float sliceSpeed = 25f;
+
 
     private bool hasHit; 
     // Start is called before the first frame update
@@ -29,7 +31,8 @@ public class PizzaSliceMovement : MonoBehaviour
                 hasHit = true;
 
                 Destroy(other.gameObject);
-                SpawnHappyCustomer(other.transform.position, other.transform.rotation);
+                _spawnManager.Spawn(happyCustomerPrefab, other.transform.position, other.transform.rotation);
+                _spawnManager.SpawnParticle(fedParticle); // Spawns the particle Effect. 
                 _gameManager.RemoveCustomer(); //removes a customer from the active customer count
                 _spawnManager.Customers.Remove(other.gameObject); //Removes the customer from the customers list. 
                 Destroy(gameObject);
@@ -51,15 +54,18 @@ public class PizzaSliceMovement : MonoBehaviour
 
     }
 
-    //method to spawn customers. 
-    private void SpawnHappyCustomer(Vector3 spawnLoc, Quaternion rotation) {
-        Instantiate(happyCustomerPrefab, spawnLoc, rotation);
+    private void OnTriggerEnter(Collider other)
+    {
+       if (other.gameObject.CompareTag("Ground"))
+        {
+            Destroy(this.gameObject);
+        }   
     }
 
     // Destroys slices when out of camera view. 
     private void OnBecameInvisible()
     {
-        Destroy(gameObject);
+        Destroy(this.gameObject);
     }
 
 

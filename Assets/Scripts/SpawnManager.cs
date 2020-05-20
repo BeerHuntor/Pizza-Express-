@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using UnityEditor;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -152,6 +153,12 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    //General Spawn method used to instantiate anything.
+    public void Spawn(GameObject obj, Vector3 loc, Quaternion rot) 
+    {
+        Instantiate(obj, loc, rot);
+    }
+
     //Checks if the delivery crate does not exist && If its not the first wave of the game, && if the player already doesn't have an active delivery.
     private void NewDeliveryCrate()
     {
@@ -165,6 +172,12 @@ public class SpawnManager : MonoBehaviour
                 }
             }
         }
+    }
+    //Spawns particle system. 
+    public void SpawnParticle(GameObject obj)
+    {
+        //Instantiate(obj, loc , rot);
+        Instantiate(obj, new Vector3(7.5f, 1f, -5.5f), Quaternion.identity);
     }
 
     //Spawns the crate after a set time, 

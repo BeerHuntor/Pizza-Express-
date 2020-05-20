@@ -8,8 +8,7 @@ public class PizzaAttach : MonoBehaviour
     private GameManager _gameManager;
     private DeliverySystem _deliverySystem;
 
-    public GameObject pizza;
-    public GameObject player;
+    //public GameObject pizza;
 
     [SerializeField] bool nextPizzaBuff; //allows the check to see if the bigger hands buff will activate on the next pizza. 
 
@@ -19,15 +18,11 @@ public class PizzaAttach : MonoBehaviour
         get { return hasPizza; }
         set { hasPizza = value; }
     }
-    void Awake () 
-    {
-    }
     // Start is called before the first frame update
     void Start()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
-        player = GameObject.Find("Player");
 
     }
 
@@ -44,7 +39,6 @@ public class PizzaAttach : MonoBehaviour
             {
                 _deliverySystem.SetBiggerHandsReadyToUse(true);
                 _gameManager.SetPizzaSlices(12);
-                //_deliverySystem.SetCrateActive(false);
             }
             else
             {

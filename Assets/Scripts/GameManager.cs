@@ -126,8 +126,8 @@ public class GameManager : MonoBehaviour
         SetMainMenuActive(false);
 
         pizzaSlices = 0;
-        counterHealth = 55;
-        startingMoney = 50.00f; //TODO Find out why add money is being called twice at the start of the game. 
+        counterHealth = 5;
+        startingMoney = 50.00f;
 
         SetMainUIActive(true);
 
