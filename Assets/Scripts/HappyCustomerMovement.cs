@@ -50,14 +50,11 @@ public class HappyCustomerMovement : MonoBehaviour
         if(other.CompareTag("HappyDestination")) {
             Destroy(gameObject);
         }
-    }
-
-    //Turns off the collider of the happy customer if collides with another customer.  
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Customer")) 
+        //Turns off the collider of the happy customer if collides with another customer.  
+        //TODO NEEDS FIXING -- DOES NOT WORK AS INTENDED. 
+        if (other.CompareTag("Customer"))
         {
-            Debug.Log("Collided With customer");
+            Debug.Log("Collided with customer");
             StartCoroutine(SelectCollider());
         }
     }
