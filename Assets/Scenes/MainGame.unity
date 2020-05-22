@@ -2041,6 +2041,50 @@ RectTransform:
   m_AnchoredPosition: {x: 46, y: -490}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &874104796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 874104798}
+  - component: {fileID: 874104797}
+  m_Layer: 0
+  m_Name: Despawner
+  m_TagString: Ground
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &874104797
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874104796}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &874104798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874104796}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.9, z: 0}
+  m_LocalScale: {x: 50, y: 1, z: 50}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &882992607
 GameObject:
   m_ObjectHideFlags: 0
@@ -4955,6 +4999,7 @@ GameObject:
   - component: {fileID: 1929747411}
   - component: {fileID: 1929747410}
   - component: {fileID: 1929747412}
+  - component: {fileID: 1929747413}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -4974,31 +5019,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fc79bd616d7c5b44893666c9784dc5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customersRemainingText: {fileID: 894018868}
-  counterHealthText: {fileID: 1420703759}
-  moneyText: {fileID: 101661190}
-  countdownText: {fileID: 1045666788}
-  customersRemainingIcon: {fileID: 1298974828}
-  counterHealthIcon: {fileID: 882992609}
-  moneyEarnedIcon: {fileID: 1779292562}
-  mainMenuImage: {fileID: 700541948}
-  feedTheHordeText: {fileID: 234287777}
-  howToPlayButton: {fileID: 940407080}
-  playButton: {fileID: 1630874887}
-  howToPlayImage: {fileID: 2093175841}
-  mainMenuArrow: {fileID: 1827046412}
-  gameOverImage: {fileID: 1244771345}
-  restartButton: {fileID: 733595987}
-  dayCountText: {fileID: 1998066395}
-  customersFedText: {fileID: 1815838401}
-  deliveryIcons:
-  - {fileID: 346310422}
-  - {fileID: 1446237623}
-  - {fileID: 1490514038}
-  - {fileID: 2085102405}
-  - {fileID: 431406644}
-  - {fileID: 1723197325}
-  - {fileID: 964864699}
 --- !u!4 &1929747411
 Transform:
   m_ObjectHideFlags: 0
@@ -5025,18 +5045,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c0c351f0b128a94eb9ffcdae7bf8665, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deliveries:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  activeTime: 5
-  currentDelivery: 
-  biggerHandsReadyToUse: 0
-  gotDelivery: 0
+--- !u!114 &1929747413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1929747409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6343c686e1d34004982f8f2f27cc08be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customersRemainingText: {fileID: 894018868}
+  customersRemainingIcon: {fileID: 1298974828}
+  counterHealthText: {fileID: 1420703759}
+  counterHealthIcon: {fileID: 882992609}
+  moneyText: {fileID: 101661190}
+  moneyEarnedIcon: {fileID: 1779292562}
+  countdownText: {fileID: 1045666788}
+  mainMenuImage: {fileID: 700541948}
+  feedTheHordeText: {fileID: 234287777}
+  howToPlayButton: {fileID: 940407080}
+  playButton: {fileID: 1630874887}
+  howToPlayImage: {fileID: 2093175841}
+  mainMenuArrow: {fileID: 1827046412}
+  gameOverImage: {fileID: 1244771345}
+  restartButton: {fileID: 733595987}
+  dayCountText: {fileID: 1998066395}
+  customersFedText: {fileID: 1815838401}
+  deliveryIcons:
+  - {fileID: 964864699}
+  - {fileID: 1723197325}
+  - {fileID: 431406644}
+  - {fileID: 2085102405}
+  - {fileID: 1490514038}
+  - {fileID: 1446237623}
+  - {fileID: 346310422}
 --- !u!1 &1985797975
 GameObject:
   m_ObjectHideFlags: 0

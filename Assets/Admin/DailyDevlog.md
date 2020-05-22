@@ -67,3 +67,14 @@ Daily Development Log 2020:
         - Implemented a very crude particle system that shows up behind the money UI when a customer is fed.  Not particularly happy with it.
         - Added despawner empty underneath the ground platform in an attempt to despawn the pizza slices, some reason OnBecomeInvisible() was no longer being called. 
         - Fixed happy customers collider box's not turning off when they hit hungry customers. 
+
+**21-05-2020**
+    **Other**
+        - Spent the day trying to get my head around webscraping for a feature of the discord bot I intend to make for the BU discord. 
+        - Also developed an RSS feed watcher with customisable time witch pulls the latest post / or the full page of posts in a given time frame and returns the title and url. 
+
+**22-05-2020**
+    **Pizza Express**
+        - Cleaned up some code, removed redundant methods and varaibles and trimmed down the fat. 
+        - Fixed the how to play screen mistake, and added a picture of the delivery crate to it. 
+        - Split the code of the UI from game manager and created a new ui manager class to handle all the ui calls and updates.
