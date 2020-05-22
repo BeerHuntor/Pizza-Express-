@@ -14,68 +14,28 @@ public class GameManager : MonoBehaviour
     private SpawnManager _spawnManager;
     private PlayerMovement _playerMovement;
     private DeliverySystem _deliverySystem;
+    private UIManager _uiManager;
 
-    [Header("Gameplay UI")]
-    [SerializeField] TextMeshProUGUI customersRemainingText;
-    [SerializeField] TextMeshProUGUI counterHealthText;
-    [SerializeField] TextMeshProUGUI moneyText;
-    [SerializeField] TextMeshProUGUI countdownText;
-    [SerializeField] RawImage customersRemainingIcon;
-    [SerializeField] RawImage counterHealthIcon;
-    [SerializeField] RawImage moneyEarnedIcon;
-    private float timeBetweenTextCountdown = 1f;
-
-    [Header("Game States UI")]
-    [SerializeField] RawImage mainMenuImage;
-    [SerializeField] RawImage feedTheHordeText;
-    [SerializeField] Button howToPlayButton;
-    [SerializeField] Button playButton;
-
-    [Header("HowToPlay")]
-    [SerializeField] RawImage howToPlayImage;
-    [SerializeField] Button mainMenuArrow;
-
-    [Header("GameOver")]
-    [SerializeField] RawImage gameOverImage;
-    [SerializeField] Button restartButton;
-    [SerializeField] TextMeshProUGUI dayCountText;
-    [SerializeField] TextMeshProUGUI customersFedText;
-    
-
-    [Header("DeliverySystemIcons")]
-    [SerializeField] List<GameObject> deliveryIcons = new List<GameObject>();
-
-
-    private float iconXPos = 360f;
-    private float iconYPos = -180f;
-    private Vector2 deliveryIconNotification;
-
-    private bool gameIsPaused;
-    private int customersFed;
-
+    public bool GameIsRunning { get; private set; }
+    public int CustomersFed { get; set; }
+    public int DayCount { get; set; }
+    public int CounterHealth { get; set; }
+    public int PizzaSlices { get; private set; }
+    public float PizzaCostToPlayer { get; private set; } = 3f;
     #region MONEY
-    private float money; // Money 
-    public float Money
-    {
-        get { return money; }
-    }
-    private float startingMoney;
+    //private float money; // Money 
+    //public float Money
+    //{
+    //    get { return money; }
+    //}
+    //private float startingMoney;
+
+    public float Money { get; private set; }
     #endregion
+    public int ActiveCustomers { get; private set; }
 
-    private int activeCustomers; // Variable to calculate the active customers in the wave
+    //TODO removed GameIsRunning substituted it for GameIsPausedProperty
 
-    private bool gameIsRunning = false;
-    public bool GameIsRunning
-    {
-        get { return gameIsRunning; }
-    }
-    private int pizzaSlices;
-    private int counterHealth;
-    public int CounterHealth
-    {
-        get { return counterHealth; }
-        set { counterHealth = value; }
-    }
     // Start is called before the first frame update
     void Start()
     {
@@ -83,16 +43,15 @@ public class GameManager : MonoBehaviour
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _playerMovement = GameObject.Find("Player").GetComponent<PlayerMovement>();
         _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
-
-        deliveryIconNotification = new Vector2(iconXPos, iconYPos);
+        _uiManager = GameObject.Find("GameManager").GetComponent<UIManager>();
         //playButton.onClick.AddListener(StartGame);
-        SetMainMenuActive(true);
+        _uiManager.SetMainMenuActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if ((counterHealth == 0 || money <= 0) && gameIsRunning)
+        if ((CounterHealth == 0 || Money <= 0) && GameIsRunning)
         {
             GameOver();
         }
@@ -103,58 +62,56 @@ public class GameManager : MonoBehaviour
     //Calls game over. 
     void GameOver()
     {
-        gameOverImage.gameObject.SetActive(true);
-        customersFedText.gameObject.SetActive(true);
-        dayCountText.gameObject.SetActive(true);
-        restartButton.gameObject.SetActive(true);
-
-        SetMainUIActive(false);
-
-        customersFedText.text = customersFed.ToString();
-        dayCountText.text = _spawnManager.DayCount.ToString();
+        _uiManager.GameOverActive(true);
+        _uiManager.SetMainUIActive(false);
 
         //restartButton.onClick.AddListener(GameReload);
-        gameIsRunning = false;
+
         _spawnManager.WaveActive = false;
     }
 
     //gets called when the start button is clicked on the psuedo title screen. 
     public void StartGame()
     {
-        gameIsRunning = true;
 
-        SetMainMenuActive(false);
+        _uiManager.SetMainMenuActive(false);
 
-        pizzaSlices = 0;
-        counterHealth = 55;
-        startingMoney = 50.00f; //TODO Find out why add money is being called twice at the start of the game. 
+        PizzaSlices = 0;
+        CounterHealth = 55;
+        Money = 50.00f; //TODO Find out why add money is being called twice at the start of the game. 
 
-        SetMainUIActive(true);
+        _uiManager.SetMainUIActive(true);
+        _uiManager.UpdateCounterHealth(CounterHealth);
+        _uiManager.UpdateWaveCounter();
 
-        UpdateCounterHealth(counterHealth);
-        UpdateWaveCounter();
-        AddMoney(startingMoney);
+        AddMoney(Money);
 
-        StartCoroutine(WaveCountdownTimer()); //? ETHANS CODE
+        StartCoroutine(_uiManager.WaveCountdownTimer()); //? ETHANS CODE
+
         _playerMovement.AllowMovement = true;
 
     }
     //Shows the delivery icon on screen when collected delivery
 
-    public void PauseGame()
+    public void PauseGame(int value)
     {
-        Time.timeScale = 0;
+        if (value == 0) 
+        {
+            //Pauses The Game
+            Time.timeScale = 0;
+            GameIsRunning = false;
+        }
+        else if (value == 1)
+        {
+            //Resumes the Game.
+            Time.timeScale = 1;
+            GameIsRunning = true;
+        }
+        else
+        {
+            Debug.LogWarning("You tried to pass in a number other than 0 or 1 to pause!");
+        }
     }
-
-    public void ResumeGame()
-    {
-        Time.timeScale = 1;
-    }
-
-    //public void GameReload()
-    //{
-    //    SceneManager.LoadScene(0);
-    //}
 
 
     //PauseMenu
@@ -162,165 +119,78 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
         {
-            if (gameIsPaused)
+            if (GameIsRunning)
             {
-                ResumeGame();
-                gameIsPaused = false;
-                _playerMovement.AllowMovement = true;
+                PauseGame(1);
+                GameIsRunning = false;
+                _playerMovement.AllowMovement = false;
             }
             else
             {
-                PauseGame();
-                gameIsPaused = true;
-                _playerMovement.AllowMovement = false;
+                PauseGame(0);
+                GameIsRunning = true;
+                _playerMovement.AllowMovement = true;
             }
         }
-    }
-    public void SetMainMenuActive(bool b)
-    {
-        //Dispaly main menu screen
-        mainMenuImage.gameObject.SetActive(b);
-        feedTheHordeText.gameObject.SetActive(b);
-        playButton.gameObject.SetActive(b);
-        howToPlayButton.gameObject.SetActive(b);
-    }
-
-    private void SetMainUIActive (bool b)
-    {
-        customersRemainingIcon.gameObject.SetActive(b);
-        customersRemainingText.gameObject.SetActive(b);
-        counterHealthIcon.gameObject.SetActive(b);
-        counterHealthText.gameObject.SetActive(b);
-        moneyEarnedIcon.gameObject.SetActive(b);
-        moneyText.gameObject.SetActive(b);
-    }
-    public void SetHowToPlayActive(bool b)
-    {
-        //display how to play screen. 
-        howToPlayImage.gameObject.SetActive(b);
-        mainMenuArrow.gameObject.SetActive(b);
-    }
-    private void OnPointerHover(PointerEventData pointerHoverEvent)
-    {
-        if (pointerHoverEvent.hovered.Contains(GameObject.Find("Play"))){
-            playButton.animator.SetTrigger("Highlighted");
-        }
-    }
-
-    //Counts down the counter in between waves. 
-    public IEnumerator WaveCountdownTimer()
-    {
-        if (_spawnManager.DayCount == 0)
-        {
-            _spawnManager.DayCount = 1;
-        }
-        countdownText.gameObject.SetActive(true);
-        countdownText.text = "day " + _spawnManager.DayCount;
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "ready?";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "3";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "2";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "1";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.text = "go!";
-        yield return new WaitForSeconds(timeBetweenTextCountdown);
-        countdownText.gameObject.SetActive(false);
-
-        _spawnManager.SpawnWave();
-
-
-    }
-
-    public void ShowDeliveryIcon(string iconName)
-    {
-        GameObject icon =  deliveryIcons.Find(x => x.name == iconName);
-        icon.SetActive(true);
-        icon.transform.position = deliveryIconNotification;
-    }
-    //hides delivery icon when delivery is completed. 
-    public void HideDeliveryIcon()
-    {
-        foreach (GameObject icon in deliveryIcons)
-        {
-            icon.SetActive(false);
-        }
-    }
-    //Updates the wave counter on the ui.
-    public void UpdateWaveCounter()
-    {
-        customersRemainingText.text = activeCustomers.ToString();
-    }
-
-    // updates the health of the counter on the ui. 
-    public void UpdateCounterHealth(int health)
-    {
-        counterHealthText.text =  health.ToString();
     }
 
     //Updates the customers. 
     public void UpdateCustomers(int customersRemaining)
     {
-        if (_deliverySystem.GetCurrentDelivery() != "OVERTIME")
+        if (_deliverySystem.CurrentDelivery != "OVERTIME")
         {
-            activeCustomers = customersRemaining;
+            ActiveCustomers = customersRemaining;
         }
         else
         {
-            activeCustomers += customersRemaining;
+            ActiveCustomers += customersRemaining;
         }
-        UpdateWaveCounter();
+        _uiManager.UpdateWaveCounter();
     }
 
+    //removes the pizza slices when fired. 
     public void RemovePizzaSlices()
     {
-        pizzaSlices--;
+        PizzaSlices--;
     }
 
+    //Sets the pizza slices when picking up a pizza
     public void SetPizzaSlices(int number)
     {
-        pizzaSlices = number;
+        PizzaSlices = number;
     }
 
-    public int GetPizzaSlices()
-    {
-        return pizzaSlices;
-    }
+    //Adds money to money count
     public void AddMoney(float moneyToAdd)
     {
         if (!_deliverySystem.HappyHourActive)
         {
-            money += moneyToAdd;
+            Money += moneyToAdd;
         } else
         {
-            money += (moneyToAdd * _deliverySystem.HappyHourMultiplier);
+            Money += (moneyToAdd * _deliverySystem.HappyHourMultiplier);
         }
         
-        UpdateMoneyCount();
+        _uiManager.UpdateMoneyCount();
     }
+    //Removes money from money count
     public void RemoveMoney (float moneyToRemove)
     {
-        money -= moneyToRemove;
-        UpdateMoneyCount();
+        Money -= moneyToRemove;
+        _uiManager.UpdateMoneyCount();
     }
 
-    private void UpdateMoneyCount()
-    {
-        moneyText.text = "" + (float)Math.Round(money, 2) ;
-    }
     //Removes one from the active customer list when despawned, and checks if there is less than zero and if so spawns a new wave. 
     public void RemoveCustomer()
     {
-        activeCustomers--; //Remove one customer everytime this gets called
-        customersFed++;
-        UpdateWaveCounter(); //Then we update the customer 'list'
-        if (activeCustomers <= 0)
+        ActiveCustomers--; //Remove one customer everytime this gets called
+        CustomersFed++;
+        _uiManager.UpdateWaveCounter(); //Then we update the customer 'list'
+        if (ActiveCustomers <= 0)
         {
-            activeCustomers = 0; // Sets the active customers to zero if the customer count is below zero.
+            ActiveCustomers = 0; // Sets the active customers to zero if the customer count is below zero.
             _spawnManager.WaveActive = false;
-            StartCoroutine(WaveCountdownTimer());
+            StartCoroutine(_uiManager.WaveCountdownTimer());
         }
     }
 }
