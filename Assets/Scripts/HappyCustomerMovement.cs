@@ -38,7 +38,7 @@ public class HappyCustomerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_gameManager.GameIsRunning)
+        if (_gameManager.GameIsRunning)
         {
             transform.position = Vector3.MoveTowards(transform.position, happyCustomerLocations[locationIndex].transform.position, movementSpeed * Time.deltaTime);
             transform.LookAt(happyCustomerLocations[locationIndex].transform.position);

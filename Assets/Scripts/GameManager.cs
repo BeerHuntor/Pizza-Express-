@@ -65,16 +65,15 @@ public class GameManager : MonoBehaviour
         _uiManager.GameOverActive(true);
         _uiManager.SetMainUIActive(false);
 
-        //restartButton.onClick.AddListener(GameReload);
-
+        GameIsRunning = false;
         _spawnManager.WaveActive = false;
     }
 
     //gets called when the start button is clicked on the psuedo title screen. 
     public void StartGame()
     {
-
         _uiManager.SetMainMenuActive(false);
+        GameIsRunning = true;
 
         PizzaSlices = 0;
         CounterHealth = 55;
@@ -99,13 +98,15 @@ public class GameManager : MonoBehaviour
         {
             //Pauses The Game
             Time.timeScale = 0;
-            GameIsRunning = false;
+            //GameIsRunning = false;
+            //Debug.Log("game should be paused" + GameIsRunning);
         }
         else if (value == 1)
         {
             //Resumes the Game.
             Time.timeScale = 1;
-            GameIsRunning = true;
+            //GameIsRunning = true;
+            //Debug.Log("Game should be unpaused" + GameIsRunning);
         }
         else
         {
@@ -121,15 +122,13 @@ public class GameManager : MonoBehaviour
         {
             if (GameIsRunning)
             {
-                PauseGame(1);
+                PauseGame(0);
                 GameIsRunning = false;
-                _playerMovement.AllowMovement = false;
             }
             else
             {
-                PauseGame(0);
+                PauseGame(1);
                 GameIsRunning = true;
-                _playerMovement.AllowMovement = true;
             }
         }
     }

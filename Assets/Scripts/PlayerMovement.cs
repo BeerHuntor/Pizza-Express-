@@ -30,16 +30,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] float defaultSpeed;
 
-    private bool isMoving = false;
 
     //private Transform personalSpace;
 
-    private bool allowMovement;
-    public bool AllowMovement
-    {
-        get { return allowMovement; }
-        set { allowMovement = value; }
-    }
+    public bool AllowMovement { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
         // Player movement with the mouse cursor. 
-        if (allowMovement && !_gameManager.GameIsRunning)
+        if (_gameManager.GameIsRunning)
         {
             float distance;
             //anim.SetBool("isRunning", true);
@@ -101,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Checks if the player is holding a pizza, and if they are spawns the pizza slice on left mouse button from the firing point game objects position.
-        if (Input.GetMouseButtonDown(0) && _pizzaAttach.HasPizza && !_gameManager.GameIsRunning)
+        if (Input.GetMouseButtonDown(0) && _pizzaAttach.HasPizza && _gameManager.GameIsRunning)
         {
 
             Instantiate(pizzaSlice, firingPoint.transform.position, transform.rotation);

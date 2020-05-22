@@ -32,7 +32,7 @@ public class DeliverySystem : MonoBehaviour
     // Gets the current delivery at random from a list of set deliveries.
     public void GetDelivery ()
     {
-        int deliveryIndex = Random.Range(0, deliveries.Length);
+        int deliveryIndex = Random.Range(1, 2);
 
         CurrentDelivery = deliveries[deliveryIndex];
         _uiManager.ShowDeliveryIcon(CurrentDelivery);

@@ -143,7 +143,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (!CrateSpawned)
         {
-            if ( !_gameManager.GameIsRunning && !isFirstWave)
+            if ( _gameManager.GameIsRunning && !isFirstWave)
             {
                 if (GameObject.Find("DeliveryCrate(Clone)") == null)
                 {

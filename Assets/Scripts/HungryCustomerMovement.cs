@@ -25,7 +25,7 @@ public class HungryCustomerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_gameManager.GameIsRunning)
+        if (_gameManager.GameIsRunning)
         {
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, movementSpeed * Time.deltaTime);
             transform.LookAt(player);
