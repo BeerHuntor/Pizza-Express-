@@ -40,7 +40,7 @@ public class DeliveryCrate : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (!_deliverySystem.GetCrateActive()) //Checks to see if the player already has a delivery active. If not they can get another delivery. 
+            if (!_deliverySystem.DeliveryActive) //Checks to see if the player already has a delivery active. If not they can get another delivery. 
             {
                 _deliverySystem.StartCrateStatus();
                 _deliverySystem.GetDelivery();

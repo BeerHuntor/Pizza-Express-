@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     private PizzaAttach _pizzaAttach;
     private GameManager _gameManager;
     private DeliverySystem _deliverySystem;
+    private UIManager _uiManager;
 
     private Camera cam;
     private Plane groundPlane;
@@ -16,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private GameObject childPizza;
     private Vector3 pizzaPosition;
 
-    public List<GameObject> reducedPizzas;
+    [SerializeField] List<GameObject> reducedPizzas;
 
     public GameObject pizza;
     public GameObject pizzaSlice;
@@ -44,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _pizzaAttach = GetComponent<PizzaAttach>();
+        _uiManager = GameObject.Find("GameManager").GetComponent<UIManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
 
@@ -64,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Ray camRay = cam.ScreenPointToRay(Input.mousePosition);
         // Player movement with the mouse cursor. 
-        if (allowMovement && _gameManager.GameIsRunning)
+        if (allowMovement && !_gameManager.GameIsRunning)
         {
             float distance;
             //anim.SetBool("isRunning", true);
@@ -99,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Checks if the player is holding a pizza, and if they are spawns the pizza slice on left mouse button from the firing point game objects position.
-        if (Input.GetMouseButtonDown(0) && _pizzaAttach.HasPizza && _gameManager.GameIsRunning)
+        if (Input.GetMouseButtonDown(0) && _pizzaAttach.HasPizza && !_gameManager.GameIsRunning)
         {
 
             Instantiate(pizzaSlice, firingPoint.transform.position, transform.rotation);
@@ -120,10 +122,10 @@ public class PlayerMovement : MonoBehaviour
 
 
         _gameManager.RemovePizzaSlices();
-        switch (_gameManager.GetPizzaSlices())
+        switch (_gameManager.PizzaSlices)
         {
             case 5:
-                if (!_deliverySystem.GetBiggerHandsReadyToUse())
+                if (!_deliverySystem.DoubleSlicesActive)
                 {
                     Destroy(childPizza);
                     SpawnPizzaModel(reducedPizzas[0], pizzaPosition, reducedPizzas[0].transform.rotation, pizzaPosition); //5 and 10 slices left
@@ -137,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
             case 4:
             case 8://8
                 Destroy(childPizza);
-                if (_deliverySystem.GetCurrentDelivery() == "DOUBLE_SLICES" && _deliverySystem.GetBiggerHandsReadyToUse() == true && _gameManager.GetPizzaSlices() == 4)
+                if (_deliverySystem.CurrentDelivery == "DOUBLE_SLICES" && _deliverySystem.DoubleSlicesActive == true && _gameManager.PizzaSlices == 4)
                 {
                     SpawnPizzaModel(reducedPizzas[3], pizzaPosition, reducedPizzas[3].transform.rotation, pizzaPosition);
                     break;
@@ -146,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
 
                 break;
             case 3:
-                if (!_deliverySystem.GetBiggerHandsReadyToUse())
+                if (!_deliverySystem.DoubleSlicesActive)
                 {
                     Destroy(childPizza);
                     SpawnPizzaModel(reducedPizzas[2], pizzaPosition, reducedPizzas[2].transform.rotation, pizzaPosition); // 3 and 6 slices left
@@ -161,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
             case 2:
                 //case 4: 
                 Destroy(childPizza);
-                if (_deliverySystem.GetCurrentDelivery() == "DOUBLE_SLICES" && _deliverySystem.GetBiggerHandsReadyToUse() == true)
+                if (_deliverySystem.CurrentDelivery == "DOUBLE_SLICES" && _deliverySystem.DoubleSlicesActive == true)
                 {
                     SpawnPizzaModel(reducedPizzas[4], pizzaPosition, reducedPizzas[4].transform.rotation, pizzaPosition);
                     break;
@@ -170,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
 
                 break;
             case 1:
-                if (!_deliverySystem.GetBiggerHandsReadyToUse())
+                if (!_deliverySystem.DoubleSlicesActive)
                 {
                     Destroy(childPizza);
                     SpawnPizzaModel(reducedPizzas[4], pizzaPosition, reducedPizzas[4].transform.rotation, pizzaPosition); //1 and 2 slices left
@@ -180,12 +182,11 @@ public class PlayerMovement : MonoBehaviour
             case 0:
                 _pizzaAttach.HasPizza = false;
                 Destroy(childPizza);
-                if (_pizzaAttach.GetNextPizzaBuff() == true && _deliverySystem.GetBiggerHandsReadyToUse() == true)
+                if (_pizzaAttach.GetNextPizzaBuff() == true && _deliverySystem.DoubleSlicesActive == true)
                 {
                     _pizzaAttach.SetNextPizzaBuff(false);
-                    // _deliverySystem.SetCrateActive(false);
-                    _deliverySystem.SetBiggerHandsReadyToUse(false);
-                    _gameManager.HideDeliveryIcon();
+                    _deliverySystem.DoubleSlicesActive = false; 
+                    _uiManager.HideDeliveryIcon();
                     break;
                 }
                 break;

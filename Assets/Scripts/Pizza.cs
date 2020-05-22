@@ -23,7 +23,7 @@ public class Pizza : MonoBehaviour
     void Update()
     {
         //Checking if the game is running, before issueing any movement code.
-        if (_gameManager.GameIsRunning)
+        if (!_gameManager.GameIsRunning)
         {
 
             //Pizza Movement from its spawn position. 

@@ -8,26 +8,17 @@ public class PizzaAttach : MonoBehaviour
     private GameManager _gameManager;
     private DeliverySystem _deliverySystem;
 
-    public GameObject pizza;
-    public GameObject player;
+    [SerializeField] GameObject pizza;
 
-    [SerializeField] bool nextPizzaBuff; //allows the check to see if the bigger hands buff will activate on the next pizza. 
+    private bool nextPizzaBuff; //allows the check to see if the bigger hands buff will activate on the next pizza. 
 
-    private bool hasPizza = false;
-    public bool HasPizza
-    {
-        get { return hasPizza; }
-        set { hasPizza = value; }
-    }
-    void Awake () 
-    {
-    }
+    public bool HasPizza { get; set; } //Used to check if the player has a pizza currently. 
+
     // Start is called before the first frame update
     void Start()
     {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
-        player = GameObject.Find("Player");
 
     }
 
@@ -35,16 +26,15 @@ public class PizzaAttach : MonoBehaviour
 
         // check if the pizza is already parented to the player. If not then attach it and move
        
-        if (other.CompareTag("Pizza") && !hasPizza) { //Check if the trigger is the pizza and the player doesnt already have a pizza
+        if (other.CompareTag("Pizza") && !HasPizza) { //Check if the trigger is the pizza and the player doesnt already have a pizza
 
             other.transform.parent = gameObject.transform; //Setting the pizza to the player as a child
             other.transform.localPosition = new Vector3(0f, 0.5f, 0.3f);
-            hasPizza = true;
+            HasPizza = true;
             if (nextPizzaBuff)
             {
-                _deliverySystem.SetBiggerHandsReadyToUse(true);
+                _deliverySystem.DoubleSlicesActive = true;
                 _gameManager.SetPizzaSlices(12);
-                //_deliverySystem.SetCrateActive(false);
             }
             else
             {
