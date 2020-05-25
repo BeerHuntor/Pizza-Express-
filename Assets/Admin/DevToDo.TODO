@@ -73,14 +73,23 @@ Task list for daily development..
         ✔ Create texture for delivery box @done(20-05-19 18:46) @lasted(4h)
         ✔ Create and retexture pizza's @done(20-05-19 21:05) @lasted(2hr)
 
-20-05-2020:
-    Sound:
-        ☐ Find / Create sounds for various things happening in game
-            ☐ Customers Fed
-            ☐ Delivery incoming
-            ☐ Voice Overs for deliveries active. 
-        ☐ Sound track ?? if your competent enough ... your not! 
+22-05-2020:
     Unity: 
-        ☐ Implememnt a  UI manager to keep the game manager for game stuff only.  All ui calls go through UI manager. 
+    ✔ Implememnt a  UI manager to keep the game manager for game stuff only.  All ui calls go through UI manager. @done(20-05-22 14:38)
     Other:
-        ☐ How to play screen has spelling mistakes, need to go through them and rectify them before release. 
+        ✔ How to play screen has spelling mistakes, need to go through them and rectify them before release. @done(20-05-22 12:11)
+    Sound:
+        ✔ Find / Create sounds for various things happening in game @done(20-05-22 13:59)
+        ✔ Customers Fed @done(20-05-22 14:00)
+        ✔ Delivery incoming @done(20-05-22 13:59)
+        ✔ Voice Overs for deliveries active. @done(20-05-22 14:00)
+        ✔ Sound track ?? if your competent enough ... your not! @done(20-05-22 14:00)
+
+25-05-2020:
+    Unity:
+        ☐ Construct Audio Manager to handle sound
+        ☐ Play sounds effects on feed, delivery crate and delivery pickups
+        ☐ Pause menu
+        ☐ Main menu options screen
+
+        ☐ Instance the scripts.. https://pastebin.com/SRGiBHFR

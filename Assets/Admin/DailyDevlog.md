@@ -78,3 +78,16 @@ Daily Development Log 2020:
         - Cleaned up some code, removed redundant methods and varaibles and trimmed down the fat. 
         - Fixed the how to play screen mistake, and added a picture of the delivery crate to it. 
         - Split the code of the UI from game manager and created a new ui manager class to handle all the ui calls and updates.
+        - Changed the game running check to make the code more legible and understandable. 
+        - Uploaded and created a page on itch.io
+        - Started work on sound manager to call the sounds from. 
+
+**25-05-2020**
+    **Pizza Express**
+        - Cleaned up the code, used singletons to reference classes instead of GO.Find() Thanks to dev, a viewer on my stream. 
+        - Added menu and game music when in the menus and when in the game - The game menu is TERRIBLE... needs re doing, try chiptune. 
+        - Fixed the issue with windfall icon not removeing,  wasnt calling the coroutine. 
+        - All sound effects are working as intended aswell as voice overs. 
+        - Added game options menu in the main menu and a pause menu that appears when paused with adjustable sound sliders - used mixer to have different audio channels for music and sound effects allowing for each to be independantly adjusted.
+        - Streamed the process on twitch for 7.5 hours. 
+        - Play tested the game myself,  and left thoughts of the experience in the feedback document. 

@@ -1,27 +1,35 @@
 Pizza-Express-Issue-Development-Tracker: 
 
-20-05-2020 01:19:31: 
-  ☐ When double slices is activated you can pick up another crate and the icon goes over the top of double slices. This needs to be fixed to disable the picking up crates until double slices is finished. 
+25-05-2020 17:24:17: 
+  ☐ Fix animations on the new imported texts when hovered. 
 
-12-05-2020 21:37:49:
-  ☐ Firing point of the pizza seems to be slightly to the left of the player -- could be the way the model is instantiated with its rotation. 
-  
-  13-05-2020 20:51:55:
-    ☐ Player animation bugs out after colliding with a game object when mouse cursor is over the player
+
+
+13-05-2020 20:51:55:
+  ☐ Player animation bugs out after colliding with a game object when mouse cursor is over the player
     
 Customer Spawning:
       
   14-05-2020 20:07:14:
-   ☐ Game breaks when customers spawn into one another,  sending some flying of the edge of the 'ground' rendering them unable to move towards the player, stalling the game so it cannot be completed or progressed. 
+    ☐ Game breaks when customers spawn into one another,  sending some flying of the edge of the 'ground' rendering them unable to move towards the player, stalling the game so it cannot be completed or progressed. 
         
   17-05-2020 21:01:19:
     ☐ When overtime is activated,  causes issues with customers spawning on top of each other. Possibly causing the game to become un-finishable
           
-      
+          
+  
 ###ARCHIVE:
-  Archive:
-    22-05-2020 15:06:06:
-    ✔ Pausing the game causes the player to become stuck @done(20-05-22 15:28) - removed allowmovemnet check, and condensed it to a simple game paused check
+   Archive:
+    20-05-2020 01:19:31: 
+    ✔ When double slices is activated you can pick up another crate and the icon goes over the top of double slices. This needs to be fixed to disable the picking up crates until double slices is finished. @done(20-05-25 20:52)
+    12-05-2020 21:37:49:
+      ✔ Firing point of the pizza seems to be slightly to the left of the player -- could be the way the model is instantiated with its rotation. @done(20-05-25 19:51) -- Seems to be fixed with retexture and re models
+    
+      23-05-2020 00:03:23: 
+     ✔ Windfall icon seems to be not removing after active time.. @done(20-05-25 19:49) -- issue with coroutine not being called. 
+     22-05-2020 15:06:06:
+   
+      ✔ Pausing the game causes the player to become stuck @done(20-05-22 15:28) - removed allowmovemnet check, and condensed it to a simple game paused check
               
     12-05-2020 19:56:54:
       ✔ Happy customer not triggering collision when entering hungry customers collider to stop the contact and forcing the happy customer off the screen unable to attack and thus making the game unable to be completed. @done(20-05-20 00:59)
