@@ -85,9 +85,17 @@ public class SpawnManager : MonoBehaviour
         NewDeliveryCrate();
     }
 
-    internal void SpawnParticle()
+
+    public void SpawnParticle ()
     {
-        Instantiate(particle, particleSpawner.transform.position, Quaternion.identity);
+        StartCoroutine(SpawnParticles());
+    }
+
+    IEnumerator SpawnParticles()
+    {
+        var particles = Instantiate(particle, particleSpawner.transform.position, Quaternion.identity);
+        yield return new WaitForSeconds(1.5f);
+        Destroy(particles);
     }
 
     public void ChangePizzaSpawnTimer(float timeToAdd)

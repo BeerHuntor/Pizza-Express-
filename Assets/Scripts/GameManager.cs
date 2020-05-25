@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     {
         get { return _instance; }
     }
-
+    private float startingMoney = 50.00f;
     public bool GameIsRunning { get; private set; }
     public int CustomersFed { get; set; }
     public int DayCount { get; set; }
@@ -74,13 +74,12 @@ public class GameManager : MonoBehaviour
 
         PizzaSlices = 0;
         CounterHealth = 5;
-        Money = 50.00f; //TODO Find out why add money is being called twice at the start of the game. 
 
         UIManager.instance.SetMainUIActive(true);
         UIManager.instance.UpdateCounterHealth(CounterHealth);
         UIManager.instance.UpdateWaveCounter();
 
-        AddMoney(Money);
+        AddMoney(startingMoney);
 
         StartCoroutine(UIManager.instance.WaveCountdownTimer()); //? ETHANS CODE
 

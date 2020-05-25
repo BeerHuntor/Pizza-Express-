@@ -91,3 +91,4 @@ Daily Development Log 2020:
         - Added game options menu in the main menu and a pause menu that appears when paused with adjustable sound sliders - used mixer to have different audio channels for music and sound effects allowing for each to be independantly adjusted.
         - Streamed the process on twitch for 7.5 hours. 
         - Play tested the game myself,  and left thoughts of the experience in the feedback document. 
+        - Removed the animation on the interactable buttons and replaced with a straight sprite swap. 
