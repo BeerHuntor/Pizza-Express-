@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using UnityEditor.Rendering;
+using System.Dynamic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class SpawnManager : MonoBehaviour
 {
+    static SpawnManager _instance; 
 
-    private GameManager _gameManager;
+    public static SpawnManager instance
+    {
+        get { return _instance; }
+    }
 
    [SerializeField] GameObject[] customerSpawns; //Spawn locations of the customers.
    [SerializeField] GameObject customerPrefab; // Customer model. 
@@ -18,6 +20,9 @@ public class SpawnManager : MonoBehaviour
    [SerializeField] GameObject deliverySpawner; // Spawn location of the delivery crate. 
    [SerializeField] GameObject deliveryCrate; // Delivery Crate
    [SerializeField] GameObject pizzaPrefab; // Pizza model. 
+
+   [SerializeField] GameObject particleSpawner;
+   [SerializeField] GameObject particle;
 
     //private List<GameObject> customers = new List<GameObject>();
 
@@ -33,6 +38,7 @@ public class SpawnManager : MonoBehaviour
     private float spawnInterval;
 
 
+
     //Varibles relating to wave size
     private bool isFirstWave = true;
     private int lastWaveSize;
@@ -46,11 +52,18 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] float pizzaSpawnTimer = 0f;
     private float defaultPizzaSpawnTimer;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            _instance = this;
+        }
+    }
 
 
     private void Start()
     {
-        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         defaultPizzaSpawnTimer = secondsBetweenPizzaSpawns;
     }
 
@@ -65,13 +78,17 @@ public class SpawnManager : MonoBehaviour
             {
                 pizzaSpawnTimer = Time.time + secondsBetweenPizzaSpawns; //change pizza spawn timer to current time + another X seconds.. 
                 Instantiate(pizzaPrefab, pizzaSpawner.transform.position, pizzaPrefab.transform.rotation);
-                _gameManager.RemoveMoney(_gameManager.PizzaCostToPlayer);
+                GameManager.instance.RemoveMoney(GameManager.instance.PizzaCostToPlayer);
 
             }
         }
         NewDeliveryCrate();
     }
 
+    internal void SpawnParticle()
+    {
+        Instantiate(particle, particleSpawner.transform.position, Quaternion.identity);
+    }
 
     public void ChangePizzaSpawnTimer(float timeToAdd)
     {
@@ -115,7 +132,7 @@ public class SpawnManager : MonoBehaviour
             GameObject spawnedCustomer = Instantiate(customerPrefab, customerSpawns[index].transform.position, customerPrefab.transform.rotation);
             CustomerList.Add(spawnedCustomer);
         }
-        _gameManager.UpdateCustomers(extraCustomers);
+        GameManager.instance.UpdateCustomers(extraCustomers);
         Debug.LogWarning("Spawned Extra Customers");
 
     }
@@ -126,13 +143,13 @@ public class SpawnManager : MonoBehaviour
         //customerCount = FindObjectsOfType<HungryCustomerMovement>().Length; //Gets the current objects with the hungry customer script active in the scene. 
         if (!WaveActive)
         {
-            _gameManager.DayCount++;
+            GameManager.instance.DayCount++;
             WaveActive = true;
             customersPerWave = Random.Range(minCustomerPerWave, maxCustomerPerWave);
             newWaveSize = lastWaveSize + customersPerWave;
 
             // First we update the number of customers, then we spawn the wave.
-            _gameManager.UpdateCustomers(newWaveSize);
+            GameManager.instance.UpdateCustomers(newWaveSize);
             StartCoroutine(SpawnCustomers(newWaveSize));
 
         }
@@ -143,7 +160,7 @@ public class SpawnManager : MonoBehaviour
     {
         if (!CrateSpawned)
         {
-            if ( _gameManager.GameIsRunning && !isFirstWave)
+            if ( GameManager.instance.GameIsRunning && !isFirstWave)
             {
                 if (GameObject.Find("DeliveryCrate(Clone)") == null)
                 {
@@ -164,6 +181,8 @@ public class SpawnManager : MonoBehaviour
         CrateSpawned = true;
         yield return new WaitForSeconds(crateSpawnTimer);
         Instantiate(deliveryCrate, deliverySpawner.transform.position, deliveryCrate.transform.rotation);
+        AudioManager.instance.PlaySound(AudioManager.SoundType.DELIVERY_CRATE);
+
 
     }
 }

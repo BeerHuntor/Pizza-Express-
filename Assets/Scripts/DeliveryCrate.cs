@@ -4,8 +4,6 @@ public class DeliveryCrate : MonoBehaviour
 {
     [SerializeField] float speed;
 
-    private DeliverySystem _deliverySystem;
-    private SpawnManager _spawnManager;
     private Rigidbody boxRb;
 
     private float xMargin; 
@@ -13,9 +11,6 @@ public class DeliveryCrate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
-        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-
         boxRb = gameObject.GetComponent<Rigidbody>();
 
         boxRb.mass = 1000;
@@ -40,11 +35,11 @@ public class DeliveryCrate : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (!_deliverySystem.DeliveryActive && !_deliverySystem.DoubleSlicesActive) //Checks to see if the player already has a delivery active. If not they can get another delivery. 
+            if (!DeliverySystem.instance.DeliveryActive && !DeliverySystem.instance.DoubleSlicesActive) //Checks to see if the player already has a delivery active. If not they can get another delivery. 
             {
-                _deliverySystem.StartCrateStatus();
-                _deliverySystem.GetDelivery();
-                _spawnManager.CrateSpawned = false;
+                DeliverySystem.instance.StartCrateStatus();
+                DeliverySystem.instance.GetDelivery();
+                SpawnManager.instance.CrateSpawned = false;
                 Destroy(gameObject);
             }
         }

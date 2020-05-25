@@ -14,7 +14,6 @@ public class HappyCustomerMovement : MonoBehaviour
     private GameObject loc7;
     private GameObject loc8;
 
-    private GameManager _gameManager;
 
 
     private float movementSpeed = 5f;
@@ -32,13 +31,12 @@ public class HappyCustomerMovement : MonoBehaviour
 
         happyCustomerLocations = new GameObject[8] { loc1, loc2, loc3, loc4, loc5, loc6, loc7, loc8 };
         locationIndex = Random.Range(0, happyCustomerLocations.Length);
-        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
     }
     // Update is called once per frame
     void Update()
     {
-        if (_gameManager.GameIsRunning)
+        if (GameManager.instance.GameIsRunning)
         {
             transform.position = Vector3.MoveTowards(transform.position, happyCustomerLocations[locationIndex].transform.position, movementSpeed * Time.deltaTime);
             transform.LookAt(happyCustomerLocations[locationIndex].transform.position);

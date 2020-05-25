@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class PizzaSliceMovement : MonoBehaviour
 {
-    public SpawnManager _spawnManager;
-    public GameManager _gameManager; 
+
+
     public GameObject happyCustomerPrefab;
+
     private Rigidbody sliceRb;
     private float sliceSpeed = 25f;
 
@@ -17,9 +18,6 @@ public class PizzaSliceMovement : MonoBehaviour
     {
         sliceRb = GetComponent<Rigidbody>();
         sliceRb.velocity = transform.forward * sliceSpeed;
-
-        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
-        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     private void OnCollisionEnter(Collision other) {
@@ -30,11 +28,14 @@ public class PizzaSliceMovement : MonoBehaviour
 
                 Destroy(other.gameObject);
                 SpawnHappyCustomer(other.transform.position, other.transform.rotation);
-                _gameManager.RemoveCustomer(); //removes a customer from the active customer count
-                _spawnManager.CustomerList.Remove(other.gameObject); //Removes the customer from the customers list. 
+                GameManager.instance.RemoveCustomer(); //removes a customer from the active customer count
+                SpawnManager.instance.CustomerList.Remove(other.gameObject); //Removes the customer from the customers list. 
+                AudioManager.instance.PlaySound(AudioManager.SoundType.CUSTOMER_FED);
+                SpawnManager.instance.SpawnParticle();
                 Destroy(gameObject);
                 float sliceCost = UnityEngine.Random.Range(1.5f, 4f);
-                _gameManager.AddMoney(sliceCost);  
+                GameManager.instance.AddMoney(sliceCost);
+
 
             }
         }

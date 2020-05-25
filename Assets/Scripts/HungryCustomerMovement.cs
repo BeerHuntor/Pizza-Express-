@@ -1,11 +1,7 @@
-﻿
-using TMPro.EditorUtilities;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HungryCustomerMovement : MonoBehaviour
 {
-    private GameManager _gameManager;
-    private UIManager _uiManager;
 
     private Transform player;
     private float defaultSpeed;
@@ -14,8 +10,6 @@ public class HungryCustomerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        _uiManager = GameObject.Find("GameManager").GetComponent<UIManager>();
         player = GameObject.Find("Player").transform;
         
         movementSpeed = 0.8f;
@@ -25,7 +19,7 @@ public class HungryCustomerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_gameManager.GameIsRunning)
+        if (GameManager.instance.GameIsRunning)
         {
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, movementSpeed * Time.deltaTime);
             transform.LookAt(player);
@@ -38,8 +32,8 @@ public class HungryCustomerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Counter"))
         {
-            _gameManager.CounterHealth--;
-            _uiManager.UpdateCounterHealth(_gameManager.CounterHealth);
+            GameManager.instance.CounterHealth--;
+            UIManager.instance.UpdateCounterHealth(GameManager.instance.CounterHealth);
         }
     }
     public void SetDefaultSpeed()

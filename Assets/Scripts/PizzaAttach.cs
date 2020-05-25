@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class PizzaAttach : MonoBehaviour
 {
-    private GameManager _gameManager;
-    private DeliverySystem _deliverySystem;
+    private static PizzaAttach _instance; 
+
+    public static PizzaAttach instance
+    {
+        get { return _instance; }
+    }
 
     [SerializeField] GameObject pizza;
 
@@ -14,12 +18,13 @@ public class PizzaAttach : MonoBehaviour
 
     public bool HasPizza { get; set; } //Used to check if the player has a pizza currently. 
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        _deliverySystem = GameObject.Find("GameManager").GetComponent<DeliverySystem>();
-
+        if (instance == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            _instance = this;
+        }
     }
 
     void OnTriggerEnter(Collider other) {
@@ -33,12 +38,12 @@ public class PizzaAttach : MonoBehaviour
             HasPizza = true;
             if (nextPizzaBuff)
             {
-                _deliverySystem.DoubleSlicesActive = true;
-                _gameManager.SetPizzaSlices(12);
+                DeliverySystem.instance.DoubleSlicesActive = true;
+                GameManager.instance.SetPizzaSlices(12);
             }
             else
             {
-                _gameManager.SetPizzaSlices(6);
+                GameManager.instance.SetPizzaSlices(6);
             }
         }
     }

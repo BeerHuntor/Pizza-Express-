@@ -5,9 +5,7 @@ using UnityEngine;
 public class Pizza : MonoBehaviour
 {
     private GameObject player;
-    private GameManager _gameManager;
 
-    private PizzaAttach _pizzaAttach;
 
     private float movementSpeed = 0.8f;
     public float zMoveLimit = -20.1f;
@@ -15,15 +13,13 @@ public class Pizza : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
-        _pizzaAttach = player.GetComponent<PizzaAttach>();
-        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //Checking if the game is running, before issueing any movement code.
-        if (_gameManager.GameIsRunning) 
+        if (GameManager.instance.GameIsRunning) 
         {
 
             //Pizza Movement from its spawn position. 
@@ -45,7 +41,7 @@ public class Pizza : MonoBehaviour
         if(other.gameObject.name == "Bin") {
             if(this.gameObject.transform.parent != null)
             {
-                _pizzaAttach.HasPizza = false;
+                PizzaAttach.instance.HasPizza = false;
                 
             }
             Destroy(gameObject);
