@@ -1,13 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using UnityEngine.EventSystems;
-using System.Reflection;
+
 
 public class GameManager : MonoBehaviour
 {
@@ -17,17 +10,18 @@ public class GameManager : MonoBehaviour
     {
         get { return _instance; }
     }
-    private float startingMoney = 50.00f;
     public bool GameIsRunning { get; private set; }
     public int CustomersFed { get; set; }
     public int DayCount { get; set; }
-    public int CounterHealth { get; set; }
+    public int CounterHealth { get; set; } = 5;
     public int PizzaSlices { get; private set; }
     public bool Restarted { get; set; }
     public float PizzaCostToPlayer { get; private set; } = 3f;
+    private float startingMoney = 50.00f;
 
     public float Money { get; private set; }
     public int ActiveCustomers { get; private set; }
+
 
     private void Awake()
     {
@@ -48,10 +42,28 @@ public class GameManager : MonoBehaviour
     {
         if ((CounterHealth == 0 || Money <= 0) && GameIsRunning)
         {
+            Debug.LogWarning($"Counter Health = {CounterHealth} & Money = {Money}");
             GameOver();
         }
-
+        //Dev Console
+        if (Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            if (UIManager.instance.ConsoleOpen == false) {
+                Debug.Log("Opening Console");
+                UIManager.instance.ConsoleOpen = true;
+                UIManager.instance.OpenDevConsole(true);
+            } else
+            {
+                Debug.Log("Closing console.");
+                UIManager.instance.OpenDevConsole(false);
+                UIManager.instance.ConsoleOpen = false;
+            }
+        }
         PauseMenu();
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     //Calls game over. 
@@ -61,6 +73,7 @@ public class GameManager : MonoBehaviour
         UIManager.instance.SetMainUIActive(false);
 
         GameIsRunning = false;
+        
         SpawnManager.instance.WaveActive = false;
     }
 
@@ -73,7 +86,6 @@ public class GameManager : MonoBehaviour
         GameIsRunning = true;
 
         PizzaSlices = 0;
-        CounterHealth = 5;
 
         UIManager.instance.SetMainUIActive(true);
         UIManager.instance.UpdateCounterHealth(CounterHealth);
@@ -96,7 +108,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             UIManager.instance.SetMainUIActive(false);
             UIManager.instance.SetPauseMenuActive(true);
-            
+            GameIsRunning = false;
         }
         else if (value == 1)
         {
@@ -104,6 +116,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
             UIManager.instance.SetPauseMenuActive(false);
             UIManager.instance.SetMainUIActive(true);
+            GameIsRunning = true;
 
         }
         else
@@ -121,12 +134,10 @@ public class GameManager : MonoBehaviour
             if (GameIsRunning)
             {
                 PauseGame(0);
-                GameIsRunning = false;
             }
             else
             {
                 PauseGame(1);
-                GameIsRunning = true;
             }
         }
     }

@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
-using UnityEditorInternal;
 
 public class UIManager : MonoBehaviour
 {
@@ -74,18 +73,22 @@ public class UIManager : MonoBehaviour
     private float iconYPos = -180f;
     private Vector2 deliveryIconNotification;
 
+    [Header("Dev Console")]
+    [SerializeField] InputField devConsole;
+    [SerializeField] GameObject consoleInputText;
+
     private bool firstTimePaused = true;
     private bool gameJustStarted = true;
 
     public float OverallSliderVal { get; set; } = 1f;
     public float MusicSliderVal { get; set; } = 1f;
     public float SfxSliderVal { get; set; } = 1f;
+    public bool ConsoleOpen { get; set; }
 
     private void Awake()
     {
         if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
             _instance = this;
         }
         deliveryIconNotification = new Vector2(iconXPos, iconYPos);
@@ -156,7 +159,7 @@ public class UIManager : MonoBehaviour
         SetMainUIActive(false);
 
         customersFedText.text = GameManager.instance.CustomersFed.ToString();
-        GameManager.instance.DayCount--;
+       // GameManager.instance.DayCount--; //TODO This causes the game stat to decrease on game over screen when pause buttons are pressed.
         dayCountText.text = GameManager.instance.DayCount.ToString();
     }
 
@@ -197,6 +200,7 @@ public class UIManager : MonoBehaviour
     public IEnumerator WaveCountdownTimer()
     {
         countdownText.gameObject.SetActive(true);
+        GameManager.instance.DayCount++;
         countdownText.text = "day " + GameManager.instance.DayCount;
         yield return new WaitForSeconds(waveTextDelay);
         countdownText.text = "ready?";
@@ -255,4 +259,33 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
+    public void OpenDevConsole(bool b)
+    {
+        devConsole.gameObject.SetActive(b);
+        if (ConsoleOpen == true)
+        {
+            DevConsole();
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    public void DevConsole()
+    {
+        string cmd = devConsole.text;
+        
+        switch (cmd)
+        {
+            case "slices":
+                DeliverySystem.instance.DoubleSlices();
+                break;
+            default:
+                Debug.LogWarning("No command set for this string!");
+                break;
+
+        }
+
+    }
 }
