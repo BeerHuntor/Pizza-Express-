@@ -23,7 +23,6 @@ public class DeliverySystem : MonoBehaviour
     {
         if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
             _instance = this;
         }
     }
@@ -35,9 +34,9 @@ public class DeliverySystem : MonoBehaviour
 
     }
     // Gets the current delivery at random from a list of set deliveries.
-    public void GetDelivery ()
+    public void GetDelivery()
     {
-        int deliveryIndex = Random.Range(0, deliveries.Length);
+        int deliveryIndex = Random.Range(0, 2);
 
         CurrentDelivery = deliveries[deliveryIndex];
         UIManager.instance.ShowDeliveryIcon(CurrentDelivery);
@@ -82,9 +81,12 @@ public class DeliverySystem : MonoBehaviour
     private IEnumerator SetCrateStatus()
     {
         DeliveryActive = true;
-        Debug.LogWarning(ActiveTime);
+        Debug.LogWarning($"Crate status: {DeliveryActive}");
         yield return new WaitForSeconds(ActiveTime);
         DeliveryActive = false;
+        Debug.LogWarning($"Crate Status: {DeliveryActive}");
+
+
     }
     // Code for the energized delivery
     private IEnumerator Energized()
@@ -99,10 +101,11 @@ public class DeliverySystem : MonoBehaviour
     }
 
     // Code for the bigger hands delivery
-    private void DoubleSlices()
+    public void DoubleSlices()
     {
         AudioManager.instance.PlaySound(AudioManager.SoundType.DOUBLE_SLICES);
         PizzaAttach.instance.SetNextPizzaBuff(true);
+        DoubleSlicesActive = true;
 
     }
 

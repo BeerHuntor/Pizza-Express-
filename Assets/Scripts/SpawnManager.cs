@@ -56,7 +56,6 @@ public class SpawnManager : MonoBehaviour
     {
         if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
             _instance = this;
         }
     }
@@ -151,7 +150,7 @@ public class SpawnManager : MonoBehaviour
         //customerCount = FindObjectsOfType<HungryCustomerMovement>().Length; //Gets the current objects with the hungry customer script active in the scene. 
         if (!WaveActive)
         {
-            GameManager.instance.DayCount++;
+            //GameManager.instance.DayCount++;
             WaveActive = true;
             customersPerWave = Random.Range(minCustomerPerWave, maxCustomerPerWave);
             newWaveSize = lastWaveSize + customersPerWave;

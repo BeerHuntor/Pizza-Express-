@@ -22,7 +22,6 @@ public class PizzaAttach : MonoBehaviour
     {
         if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
             _instance = this;
         }
     }
@@ -38,7 +37,8 @@ public class PizzaAttach : MonoBehaviour
             HasPizza = true;
             if (nextPizzaBuff)
             {
-                DeliverySystem.instance.DoubleSlicesActive = true;
+                //DeliverySystem.instance.DoubleSlicesActive = true;
+                Debug.Log($"Double slices active = {DeliverySystem.instance.DoubleSlicesActive}");
                 GameManager.instance.SetPizzaSlices(12);
             }
             else

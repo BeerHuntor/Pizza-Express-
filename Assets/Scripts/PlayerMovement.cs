@@ -41,7 +41,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
             _instance = this;
         }
     }
@@ -185,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
                 if (PizzaAttach.instance.GetNextPizzaBuff() == true && DeliverySystem.instance.DoubleSlicesActive == true)
                 {
                     PizzaAttach.instance.SetNextPizzaBuff(false);
-                    DeliverySystem.instance.DoubleSlicesActive = false; 
+                    DeliverySystem.instance.DoubleSlicesActive = false;
                     UIManager.instance.HideDeliveryIcon();
                     break;
                 }
