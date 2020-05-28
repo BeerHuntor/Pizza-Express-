@@ -19,7 +19,8 @@ public class HappyCustomerMovement : MonoBehaviour
     private float movementSpeed = 5f;
     private int locationIndex;
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         loc1 = GameObject.Find("Loc1");
         loc2 = GameObject.Find("Loc2");
         loc3 = GameObject.Find("Loc3");
@@ -44,18 +45,25 @@ public class HappyCustomerMovement : MonoBehaviour
     }
 
     //Deletes happy people once they reach there destination
-    void OnTriggerEnter(Collider other) {
-        if(other.CompareTag("HappyDestination")) {
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("HappyDestination"))
+        {
             Destroy(gameObject);
         }
         //Turns off the collider of the happy customer if collides with another customer.  
         //TODO NEEDS FIXING -- DOES NOT WORK AS INTENDED. 
-        if (other.CompareTag("Customer"))
+    }
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.gameObject.CompareTag("Customer"))
         {
             Debug.Log("Collided with customer");
             StartCoroutine(SelectCollider());
         }
+
     }
+
     //Activates / deactivates collider after 1 second.
     IEnumerator SelectCollider()
     {
