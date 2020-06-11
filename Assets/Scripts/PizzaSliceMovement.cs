@@ -22,10 +22,14 @@ public class PizzaSliceMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.CompareTag("Customer")) {
-            if (!hasHit) //attempt at stopping the slice from 'double spawning' happy customers. 
+            //v0.5 EDITED HERE (restructured the collision code to make the added hunger values work)
+            //if (!hasHit) //attempt at stopping the slice from 'double spawning' happy customers. 
+            //{
+            //    //hasHit = true;
+            //Minus's one from the hunger value on hit before any logic is completed. This was to stop the hunger 1's from having to take 2 pizzas instead of their intended 1. 
+            other.transform.GetComponent<HungryCustomerMovement>().customer.UpdateHungerValue();
+            if (other.transform.GetComponent<HungryCustomerMovement>().customer.HungerValue <= 0)
             {
-                hasHit = true;
-
                 Destroy(other.gameObject);
                 SpawnHappyCustomer(other.transform.position, other.transform.rotation);
                 GameManager.instance.RemoveCustomer(); //removes a customer from the active customer count
@@ -33,11 +37,17 @@ public class PizzaSliceMovement : MonoBehaviour
                 AudioManager.instance.PlaySound(AudioManager.SoundType.CUSTOMER_FED);
                 SpawnManager.instance.SpawnParticle();
                 Destroy(gameObject);
-                float sliceCost = UnityEngine.Random.Range(1.5f, 4f);
-                GameManager.instance.AddMoney(sliceCost);
-
-
+                GameManager.instance.AddMoney(other.transform.GetComponent<HungryCustomerMovement>().customer.TipValue);
+            } else
+            {
+                AudioManager.instance.PlaySound(AudioManager.SoundType.CUSTOMER_FED);
+                other.transform.GetComponent<HungryCustomerMovement>().UpdateSprite();
+                Destroy(gameObject);
+                
+                
             }
+               // float sliceCost = UnityEngine.Random.Range(1.5f, 4f);
+            //}
         }
 
         if (other.gameObject.CompareTag("Counter"))
