@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button howToPlayButton;
     [SerializeField] Button playButton;
     [SerializeField] Button optionsButton;
+    [SerializeField] Button quitButton;
 
     [Header("Main Menu Options")]
     [SerializeField] RawImage o_volumeText;
@@ -54,6 +55,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] RawImage p_soundFxText;
     [SerializeField] Slider p_soundFxSlider;
     [SerializeField] Button resumeText;
+    [SerializeField] Button quitText;
 
     [Header("How To Play")]
     [SerializeField] RawImage howToPlayImage;
@@ -64,6 +66,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button restartButton;
     [SerializeField] TextMeshProUGUI dayCountText;
     [SerializeField] TextMeshProUGUI customersFedText;
+    [SerializeField] Button gameOverQuit;
 
     [Header("Delivery System Icons")]
     [SerializeField] List<GameObject> deliveryIcons = new List<GameObject>();
@@ -104,6 +107,7 @@ public class UIManager : MonoBehaviour
         playButton.gameObject.SetActive(b);
         howToPlayButton.gameObject.SetActive(b);
         optionsButton.gameObject.SetActive(b);
+        quitButton.gameObject.SetActive(b);
         if (b && gameJustStarted)
         {
             AudioManager.instance.PlaySound(AudioManager.SoundType.MENU_MUSIC);
@@ -146,6 +150,7 @@ public class UIManager : MonoBehaviour
 
         //other stuff.
         resumeText.gameObject.SetActive(b);
+        quitText.gameObject.SetActive(b);
     }
 
     //Set Game Over Ui
@@ -155,22 +160,23 @@ public class UIManager : MonoBehaviour
         customersFedText.gameObject.SetActive(b);
         dayCountText.gameObject.SetActive(b);
         restartButton.gameObject.SetActive(b);
+        gameOverQuit.gameObject.SetActive(b);
 
         SetMainUIActive(false);
 
         customersFedText.text = GameManager.instance.CustomersFed.ToString();
-       // GameManager.instance.DayCount--; //TODO This causes the game stat to decrease on game over screen when pause buttons are pressed.
+        // GameManager.instance.DayCount--; //TODO This causes the game stat to decrease on game over screen when pause buttons are pressed.
         dayCountText.text = GameManager.instance.DayCount.ToString();
     }
 
-    //Menu Icon Animation.
-    private void OnPointerHover(PointerEventData pointerHoverEvent)
-    {
-        if (pointerHoverEvent.hovered.Contains(GameObject.Find("Play")))
-        {
-            playButton.animator.SetTrigger("Highlighted");
-        }
-    }
+    ////Menu Icon Animation.
+    //private void OnPointerHover(PointerEventData pointerHoverEvent)
+    //{
+    //    if (pointerHoverEvent.hovered.Contains(GameObject.Find("Play")))
+    //    {
+    //        playButton.animator.SetTrigger("Highlighted");
+    //    }
+    //}
 
     //Set Howtoplay UI
     public void SetHowToPlayActive(bool b)
@@ -184,10 +190,18 @@ public class UIManager : MonoBehaviour
     //main game UI
     public void SetMainUIActive(bool b)
     {
+        customersRemainingIcon.gameObject.SetActive(b);
+        customersRemainingText.gameObject.SetActive(b);
+        counterHealthIcon.gameObject.SetActive(b);
+        counterHealthText.gameObject.SetActive(b);
+        moneyEarnedIcon.gameObject.SetActive(b);
+        moneyText.gameObject.SetActive(b);
+
         if (countdownText.gameObject.activeInHierarchy)
         {
             countdownText.gameObject.SetActive(false);
-        } else if (!countdownText.gameObject.activeInHierarchy && SpawnManager.instance.CustomerList.Count == 0)
+        }
+        else if (!countdownText.gameObject.activeInHierarchy && SpawnManager.instance.CustomerList.Count == 0)
         {
             countdownText.gameObject.SetActive(true);
         }
@@ -195,12 +209,6 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
-        customersRemainingIcon.gameObject.SetActive(b);
-        customersRemainingText.gameObject.SetActive(b);
-        counterHealthIcon.gameObject.SetActive(b);
-        counterHealthText.gameObject.SetActive(b);
-        moneyEarnedIcon.gameObject.SetActive(b);
-        moneyText.gameObject.SetActive(b);
 
 
     }
@@ -230,7 +238,7 @@ public class UIManager : MonoBehaviour
     }
 
     //Get slider values
-    public void SetSliderValues ()
+    public void SetSliderValues()
     {
         p_overallSlider.value = OverallSliderVal;
         p_musicSlider.value = MusicSliderVal;
@@ -286,7 +294,7 @@ public class UIManager : MonoBehaviour
     public void DevConsole()
     {
         string cmd = devConsole.text;
-        
+
         switch (cmd)
         {
             case "slices":
