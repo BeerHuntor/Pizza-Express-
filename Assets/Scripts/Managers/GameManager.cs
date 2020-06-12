@@ -45,20 +45,6 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning($"Counter Health = {CounterHealth} & Money = {Money}");
             GameOver();
         }
-        //Dev Console
-        if (Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            if (UIManager.instance.ConsoleOpen == false) {
-                Debug.Log("Opening Console");
-                UIManager.instance.ConsoleOpen = true;
-                UIManager.instance.OpenDevConsole(true);
-            } else
-            {
-                Debug.Log("Closing console.");
-                UIManager.instance.OpenDevConsole(false);
-                UIManager.instance.ConsoleOpen = false;
-            }
-        }
         PauseMenu();
     }
     //Generic method to display debug messages without having to write everything each time. 
