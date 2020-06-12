@@ -20,6 +20,7 @@ v0.5 -
 * Added new menu and game music - Your welcome! and added menu hover sound effects and lowered default volumes of both. 
 * Changed the graphics on the UI to make them look cleaner. 
 * Now able to quit the game from the main menu screen, pause menu and game over screen.
+* Added a restart button from pause menu, to enable restarting of the game when the customers bug out - Will be removed in a future update. 
 
 ---BUG FIXES---
 * Fixed a bug which allowed the player to press the pause keys and subtract days from the game over screen - v0.4.1
