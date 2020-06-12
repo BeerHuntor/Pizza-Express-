@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
     private static AudioManager _instance;
 
     private float defaultMusicVolume = 0.1f;
-    private float defaultSFXVolume = 0.8f;
+    private float defaultSFXVolume = 0.6f;
     public static AudioManager instance
     {
         get { return _instance; }
@@ -189,7 +189,6 @@ public class AudioManager : MonoBehaviour
     public void SetSoundFxVolumeLevel(float lvl)
     {
         UIManager.instance.SfxSliderVal = lvl;
-        Debug.Log(lvl);
         mixer.SetFloat("SoundEffectsVolume", Mathf.Log10(lvl) * 60);
         if (lvl <= 0)
         {
