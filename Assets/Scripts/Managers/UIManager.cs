@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Slider p_soundFxSlider;
     [SerializeField] Button resumeText;
     [SerializeField] Button quitText;
+    [SerializeField] Button restartTextButton;
 
     [Header("How To Play")]
     [SerializeField] RawImage howToPlayImage;
@@ -151,6 +152,7 @@ public class UIManager : MonoBehaviour
         //other stuff.
         resumeText.gameObject.SetActive(b);
         quitText.gameObject.SetActive(b);
+        restartTextButton.gameObject.SetActive(b);
     }
 
     //Set Game Over Ui
@@ -168,15 +170,6 @@ public class UIManager : MonoBehaviour
         // GameManager.instance.DayCount--; //TODO This causes the game stat to decrease on game over screen when pause buttons are pressed.
         dayCountText.text = GameManager.instance.DayCount.ToString();
     }
-
-    ////Menu Icon Animation.
-    //private void OnPointerHover(PointerEventData pointerHoverEvent)
-    //{
-    //    if (pointerHoverEvent.hovered.Contains(GameObject.Find("Play")))
-    //    {
-    //        playButton.animator.SetTrigger("Highlighted");
-    //    }
-    //}
 
     //Set Howtoplay UI
     public void SetHowToPlayActive(bool b)
@@ -278,33 +271,5 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
-    public void OpenDevConsole(bool b)
-    {
-        devConsole.gameObject.SetActive(b);
-        if (ConsoleOpen == true)
-        {
-            DevConsole();
-        }
-        else
-        {
-            return;
-        }
-    }
 
-    public void DevConsole()
-    {
-        string cmd = devConsole.text;
-
-        switch (cmd)
-        {
-            case "slices":
-                DeliverySystem.instance.DoubleSlices();
-                break;
-            default:
-                Debug.LogWarning("No command set for this string!");
-                break;
-
-        }
-
-    }
 }
