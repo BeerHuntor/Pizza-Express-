@@ -13,7 +13,7 @@ public class HungryCustomerMovement : MonoBehaviour
 
     private void Awake()
     {
-        float speedRange = UnityEngine.Random.Range(0.5f, 2f);
+        float speedRange = UnityEngine.Random.Range(0.5f, 1.5f);
         int hungerValue = UnityEngine.Random.Range(1, 4); //int is exclusive.
         customer = new HungryCustomer(speedRange, hungerValue);
         
