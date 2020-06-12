@@ -1,7 +1,5 @@
 Pizza-Express-Issue-Development-Tracker: 
 
-12-06-2020 00:30:58:
-  ☐ Double Slices now not working as intended. Check previous commits for working version. Seems the checks are getting set to false at the wrong location. @high @planned 
 
 11-06-2020 14:05:58:
   ☐ When resizing the game window, the ui icons don't seem to be adjusting in relation.    
@@ -17,6 +15,9 @@ Customer Spawning:
   
   ###ARCHIVE:
     Archive:
+    
+    12-06-2020 00:30:58:
+      ✔ Double Slices now not working as intended. Check previous commits for working version. Seems the checks are getting set to false at the wrong location. @done(20-06-12 16:17)
     
     14-05-2020 20:07:14:
       ✔ Game breaks when customers spawn into one another,  sending some flying of the edge of the 'ground' rendering them unable to move towards the player, stalling the game so it cannot be completed or progressed. @done(20-05-28 15:16)

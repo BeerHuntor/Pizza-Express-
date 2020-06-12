@@ -71,7 +71,7 @@ public class SpawnManager : MonoBehaviour
     void Update()
     {
 
-        if (CustomerList.Count != 0)
+        if (CustomerList.Count != 0 && GameManager.instance.GameIsRunning != false)
         {
             if (Time.time > pizzaSpawnTimer) // if the time since this frame is more than the value of pizzaspawn timer
             {

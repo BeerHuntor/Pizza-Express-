@@ -17,13 +17,18 @@ v0.5 -
 * Game will now be restarted completley when restarted from the game over screen. - v0.4.1
 * Added varying customers with different movement speed and hunger value to increase difficulty from the outset. 
 * Added sprites above the hungry customers to visualise how many slices of pizza they will need before being full, and added a smiley sprite when customer is happy.
+* Added new menu and game music - Your welcome! and added menu hover sound effects and lowered default volumes of both. 
+* Changed the graphics on the UI to make them look cleaner. 
+* Now able to quit the game from the main menu screen, pause menu and game over screen.
 
 ---BUG FIXES---
 * Fixed a bug which allowed the player to press the pause keys and subtract days from the game over screen - v0.4.1
 * Fixed a bug which allowed the player to pick up another delivery with no pizza when double slices delivery was activated - v0.4.1
 * Fixed a bug causing the player to not be able to restart the game from the game over screen. - v0.4.1
 * Fixed a bug where the fed customers collide with the hungry customers and hit them causing the game to sometimes become unfinishable --- again! - v0.4.1
-* Fixed a bug where the double slices delivery wasnt activating correctly causing the pizza currently held to act as the buff, instead of the next pizza you pick up. 
+* Fixed a bug where the double slices delivery wasnt activating correctly causing the pizza currently held to act as the buff, instead of the next pizza you pick up.
+* Fixed the pause menu where when pausing inbetween waves with the countdown text showing,  it wouldn't dissapear making the slider selection difficult. 
+* Stopped the pizzas from spawning when the game was over
 
 v0.4 - 
  * Added pause menu ui and an options menu from the main menu screen 

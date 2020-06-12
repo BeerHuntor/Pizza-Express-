@@ -147,6 +147,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Closes the game on quit button.
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
     //Updates the customers. 
     public void UpdateCustomers(int customersRemaining)
     {

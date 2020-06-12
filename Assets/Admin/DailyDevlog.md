@@ -130,3 +130,9 @@ Daily Development Log 2020:
     **Pizza Express**
         - Refactored the pizza slice spawning to make it a little easier on the eyes, still not completley happy with it, but removed some repeating code. 
         - Fixed an issue with the pizza slices not activating correctly.  They were activating on the current pizza not the next pizza. 
+        - Fixed the pause menu where when pausing inbetween waves with the countdown text showing,  it wouldn't dissapear making the slider selection difficult.
+        - Stopped the pizzas from spawning when game over is called
+        - Fixed a few bugs that I found that haven't been reported or yet seen. Game over was flashing before actually restarting the game,  removing the hide UI call from the button fixed this.  Also made the pizza slices that are fired despawn on contact with the trigger AND the ground. 
+        - Added new menu music and game music, aswell as new menu sfx when hovering and clicking.  Changed the default volume down from whatever it was at default, to now be 0.3f for music, and 0.6f for sfx. 
+        - Created script for buttons to call the sound clips. 
+        - Refactored the switch statement in auidomanager to select the clips, alot of same code in multiple places was replaced by a method call. 

@@ -22,10 +22,7 @@ public class PizzaSliceMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision other) {
         if (other.gameObject.CompareTag("Customer")) {
-            //v0.5 EDITED HERE (restructured the collision code to make the added hunger values work)
-            //if (!hasHit) //attempt at stopping the slice from 'double spawning' happy customers. 
-            //{
-            //    //hasHit = true;
+
             //Minus's one from the hunger value on hit before any logic is completed. This was to stop the hunger 1's from having to take 2 pizzas instead of their intended 1. 
             other.transform.GetComponent<HungryCustomerMovement>().customer.UpdateHungerValue();
             if (other.transform.GetComponent<HungryCustomerMovement>().customer.HungerValue <= 0)
@@ -46,20 +43,20 @@ public class PizzaSliceMovement : MonoBehaviour
                 
                 
             }
-               // float sliceCost = UnityEngine.Random.Range(1.5f, 4f);
-            //}
         }
 
-        if (other.gameObject.CompareTag("Counter"))
+        if (other.gameObject.CompareTag("Counter") || other.gameObject.CompareTag("Ground"))
         {
             Destroy(gameObject);
         }
 
+
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
         if (other.gameObject.CompareTag("Ground"))
-        {
             Destroy(gameObject);
-        }
-
     }
 
     //method to spawn customers. 
