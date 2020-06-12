@@ -16,6 +16,8 @@ public class PizzaAttach : MonoBehaviour
 
     private bool nextPizzaBuff; //allows the check to see if the bigger hands buff will activate on the next pizza. 
 
+    public bool UsedPizzaBuff { get; set; }
+
     public bool HasPizza { get; set; } //Used to check if the player has a pizza currently. 
 
     private void Awake()
@@ -38,7 +40,7 @@ public class PizzaAttach : MonoBehaviour
             if (nextPizzaBuff)
             {
                 //DeliverySystem.instance.DoubleSlicesActive = true;
-                Debug.Log($"Double slices active = {DeliverySystem.instance.DoubleSlicesActive}");
+                UsedPizzaBuff = true;
                 GameManager.instance.SetPizzaSlices(12);
             }
             else
@@ -52,14 +54,6 @@ public class PizzaAttach : MonoBehaviour
     public void SetNextPizzaBuff(bool buffNextTime)
     {
         nextPizzaBuff = buffNextTime;
-    }
-    
-    //getter to reference next pizza buff. 
-    public bool GetNextPizzaBuff()
-    {
-        return nextPizzaBuff;
-    }
-
-    
+    }  
 
 }

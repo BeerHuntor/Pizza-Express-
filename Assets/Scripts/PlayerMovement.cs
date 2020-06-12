@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -88,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else
                     {
-                        
+
                         anim.SetInteger("moving", 0);
                     }
                 }
@@ -107,82 +104,75 @@ public class PlayerMovement : MonoBehaviour
             RemoveSlices();
         }
     }
-
-    // When pizza slice is fired -- spawns the slice equivelant in its place. 
-    //TODO: Re Write this code to be pretty -- PLEASE?
+    //When the pizza slice gets fired, this removes the current model held and spawns a new model representing the slices remaining in its place. 
     public void RemoveSlices()
     {
-
-        //Getting the current held pizzas position
-        pizzaPosition = gameObject.transform.GetChild(3).gameObject.transform.position;
-
-        //Getting the current held pizzas gameobject
-        childPizza = gameObject.transform.GetChild(3).gameObject;
-
-
+        /*
+         * Index 0 = 5 slices
+         * Index 1 = 4 slices
+         * Index 2 = 3 slices
+         * Index 3 = 2 slices
+         * Index 4 = 1 slice
+         */
         GameManager.instance.RemovePizzaSlices();
         switch (GameManager.instance.PizzaSlices)
         {
+            case 10:
+                SpawnNewPizzaModel(0);
+                break;
             case 5:
-                if (!DeliverySystem.instance.DoubleSlicesActive)
+                if (!PizzaAttach.instance.UsedPizzaBuff)
                 {
-                    Destroy(childPizza);
-                    SpawnPizzaModel(reducedPizzas[0], pizzaPosition, reducedPizzas[0].transform.rotation, pizzaPosition); //5 and 10 slices left
+                    SpawnNewPizzaModel(0);
                     break;
                 }
                 break;
-            case 10://10
-                Destroy(childPizza);
-                SpawnPizzaModel(reducedPizzas[0], pizzaPosition, reducedPizzas[0].transform.rotation, pizzaPosition); //5 and 10 slices left
+            case 8:
+                SpawnNewPizzaModel(1);
                 break;
             case 4:
-            case 8://8
-                Destroy(childPizza);
-                if (DeliverySystem.instance.CurrentDelivery == "DOUBLE_SLICES" && DeliverySystem.instance.DoubleSlicesActive == true && GameManager.instance.PizzaSlices == 4)
+                if (!PizzaAttach.instance.UsedPizzaBuff)
                 {
-                    SpawnPizzaModel(reducedPizzas[3], pizzaPosition, reducedPizzas[3].transform.rotation, pizzaPosition);
+                    SpawnNewPizzaModel(1);
                     break;
                 }
-                SpawnPizzaModel(reducedPizzas[1], pizzaPosition, reducedPizzas[1].transform.rotation, pizzaPosition); // 4 and 8 slices left
-
+                else
+                {
+                    SpawnNewPizzaModel(3);
+                    Debug.Log(GameManager.instance.DebugMessage());
+                    break;
+                }
+            case 6:
+                SpawnNewPizzaModel(2);
                 break;
             case 3:
-                if (!DeliverySystem.instance.DoubleSlicesActive)
+                if (!PizzaAttach.instance.UsedPizzaBuff)
                 {
-                    Destroy(childPizza);
-                    SpawnPizzaModel(reducedPizzas[2], pizzaPosition, reducedPizzas[2].transform.rotation, pizzaPosition); // 3 and 6 slices left
+                    SpawnNewPizzaModel(2);
                     break;
                 }
-                break;
-            case 6://6
-                Destroy(childPizza);
-                SpawnPizzaModel(reducedPizzas[2], pizzaPosition, reducedPizzas[2].transform.rotation, pizzaPosition); // 3 and 6 slices left
-
                 break;
             case 2:
-                //case 4: 
-                Destroy(childPizza);
-                if (DeliverySystem.instance.CurrentDelivery == "DOUBLE_SLICES" && DeliverySystem.instance.DoubleSlicesActive == true)
+                if (!PizzaAttach.instance.UsedPizzaBuff)
                 {
-                    SpawnPizzaModel(reducedPizzas[4], pizzaPosition, reducedPizzas[4].transform.rotation, pizzaPosition);
+                    SpawnNewPizzaModel(3);
                     break;
                 }
-                SpawnPizzaModel(reducedPizzas[3], pizzaPosition, reducedPizzas[3].transform.rotation, pizzaPosition); // 2 and 4 slices left
-
+                else
+                {
+                    SpawnNewPizzaModel(4);
+                }
                 break;
             case 1:
-                if (!DeliverySystem.instance.DoubleSlicesActive)
-                {
-                    Destroy(childPizza);
-                    SpawnPizzaModel(reducedPizzas[4], pizzaPosition, reducedPizzas[4].transform.rotation, pizzaPosition); //1 and 2 slices left
-                    break;
-                }
+                SpawnNewPizzaModel(4);
                 break;
             case 0:
                 PizzaAttach.instance.HasPizza = false;
-                Destroy(childPizza);
-                if (PizzaAttach.instance.GetNextPizzaBuff() == true && DeliverySystem.instance.DoubleSlicesActive == true)
+                Destroy(gameObject.transform.GetChild(3).gameObject);
+                if (PizzaAttach.instance.UsedPizzaBuff)
                 {
+                    Debug.Log(GameManager.instance.DebugMessage());
+                    PizzaAttach.instance.UsedPizzaBuff = false;
                     PizzaAttach.instance.SetNextPizzaBuff(false);
                     DeliverySystem.instance.DoubleSlicesActive = false;
                     UIManager.instance.HideDeliveryIcon();
@@ -190,19 +180,29 @@ public class PlayerMovement : MonoBehaviour
                 }
                 break;
             default:
+                Debug.LogWarning("Couldn't find the correct pizza slice model");
                 break;
         }
+
     }
+
 
     //Spawns the pizza models upon firing the pizza
-    void SpawnPizzaModel(GameObject go, Vector3 loc, Quaternion rot, Vector3 spawnPizzaLoc)
+    void SpawnNewPizzaModel(int modelNumber)
     {
-        GameObject newPizza = Instantiate(go, loc, rot);
+        //Getting the current held pizzas gameobject
+        childPizza = gameObject.transform.GetChild(3).gameObject;
+        //Getting the current held pizzas position
+        pizzaPosition = gameObject.transform.GetChild(3).gameObject.transform.position;
+
+        Destroy(childPizza);
+        GameObject newPizza = Instantiate(reducedPizzas[modelNumber], pizzaPosition, reducedPizzas[modelNumber].transform.rotation);
 
         newPizza.transform.parent = gameObject.transform;
-        newPizza.transform.position = spawnPizzaLoc;
+        newPizza.transform.position = pizzaPosition;
 
     }
+
 
     //Changes the players movement speed.
     public void ChangeMovementSpeed(float speed)
