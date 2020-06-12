@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DeliverySystem : MonoBehaviour
@@ -36,7 +37,7 @@ public class DeliverySystem : MonoBehaviour
     // Gets the current delivery at random from a list of set deliveries.
     public void GetDelivery()
     {
-        int deliveryIndex = Random.Range(0, 2);
+        int deliveryIndex = Random.Range(0, deliveries.Length);
 
         CurrentDelivery = deliveries[deliveryIndex];
         UIManager.instance.ShowDeliveryIcon(CurrentDelivery);
@@ -81,10 +82,8 @@ public class DeliverySystem : MonoBehaviour
     private IEnumerator SetCrateStatus()
     {
         DeliveryActive = true;
-        Debug.LogWarning($"Crate status: {DeliveryActive}");
         yield return new WaitForSeconds(ActiveTime);
         DeliveryActive = false;
-        Debug.LogWarning($"Crate Status: {DeliveryActive}");
 
 
     }

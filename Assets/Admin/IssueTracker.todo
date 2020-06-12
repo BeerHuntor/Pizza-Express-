@@ -1,36 +1,50 @@
 Pizza-Express-Issue-Development-Tracker: 
 
-25-05-2020 17:24:17: 
-  ☐ Fix animations on the new imported texts when hovered. 
+12-06-2020 00:30:58:
+  ☐ Double Slices now not working as intended. Check previous commits for working version. Seems the checks are getting set to false at the wrong location. @high @planned 
 
-
-
-13-05-2020 20:51:55:
+11-06-2020 14:05:58:
+  ☐ When resizing the game window, the ui icons don't seem to be adjusting in relation.    
+  14:15:45:
+    ☐ When pressing the pause menu the countdown timer doesnt de activate.  
+13-05-2020 20:51:55:  
   ☐ Player animation bugs out after colliding with a game object when mouse cursor is over the player
-    
-Customer Spawning:
-      
-  14-05-2020 20:07:14:
-    ☐ Game breaks when customers spawn into one another,  sending some flying of the edge of the 'ground' rendering them unable to move towards the player, stalling the game so it cannot be completed or progressed. 
-        
+
+Customer Spawning:  
   17-05-2020 21:01:19:
-    ☐ When overtime is activated,  causes issues with customers spawning on top of each other. Possibly causing the game to become un-finishable
-          
-          
+  ☐ When overtime is activated,  causes issues with customers spawning on top of each other. Possibly causing the game to become un-finishable
   
-###ARCHIVE:
-   Archive:
+  
+  ###ARCHIVE:
+    Archive:
+    
+    14-05-2020 20:07:14:
+      ✔ Game breaks when customers spawn into one another,  sending some flying of the edge of the 'ground' rendering them unable to move towards the player, stalling the game so it cannot be completed or progressed. @done(20-05-28 15:16)
+      ✔ Occasionally a zombie gets hit with a slice and runs away taking another zombie with him (pushes him out the way). The net result is the spawn of zombies keeps happening and the counter goes to -1 (but no lower) @done(20-05-28 15:17)
+    
+    27-05-2020 11:36:41: FEEDBACK:
+     ✔ Double slices icon doesnt dissapears too quickly allowing for pickup of another delivery, and not dissapearing when its suppose to @done(20-05-28 14:21)
+      11:56:11:
+       ✔ When on game over screen, pressing pause buttons allows the day count to decrease. @done(20-05-28 14:43)
+    
+    25-05-2020 23:24:33 :
+      ✔ Hitting resume on the pause menu restarts the game, but doesnt allow the player to move. @done(20-05-25 23:38) 
+
+    25-05-2020 17:24:17: 
+      ✔ Fix animations on the new imported texts when hovered. @done(20-05-25 23:22) - replaced with sprite swap. 
+    
     20-05-2020 01:19:31: 
-    ✔ When double slices is activated you can pick up another crate and the icon goes over the top of double slices. This needs to be fixed to disable the picking up crates until double slices is finished. @done(20-05-25 20:52)
+      ✔ When double slices is activated you can pick up another crate and the icon goes over the top of double slices. This needs to be fixed to disable the picking up crates until double slices is finished. @done(20-05-25 20:52)
+    
     12-05-2020 21:37:49:
       ✔ Firing point of the pizza seems to be slightly to the left of the player -- could be the way the model is instantiated with its rotation. @done(20-05-25 19:51) -- Seems to be fixed with retexture and re models
     
-      23-05-2020 00:03:23: 
-     ✔ Windfall icon seems to be not removing after active time.. @done(20-05-25 19:49) -- issue with coroutine not being called. 
-     22-05-2020 15:06:06:
-   
+    23-05-2020 00:03:23: 
+      ✔ Windfall icon seems to be not removing after active time.. @done(20-05-25 19:49) -- issue with coroutine not being called. 
+    
+    22-05-2020 15:06:06:
       ✔ Pausing the game causes the player to become stuck @done(20-05-22 15:28) - removed allowmovemnet check, and condensed it to a simple game paused check
-              
+             
     12-05-2020 19:56:54:
       ✔ Happy customer not triggering collision when entering hungry customers collider to stop the contact and forcing the happy customer off the screen unable to attack and thus making the game unable to be completed. @done(20-05-20 00:59)
     
@@ -45,13 +59,11 @@ Customer Spawning:
         ✔ When player moves to the bin with the pizza from the oven, it despawns and gives infinate slices @done(20-05-13 21:18)
         
     10-05-2020 23:22:12:
-        ✔ Pizza spawn timer growing exponentially allowing for the player to effectivly stop the spawning of the pizzas in between waves. 
-        - checked against if the customer list, if the list was not empty - meaning customers not been killed, keep spawning. 
+        ✔ Pizza spawn timer growing exponentially allowing for the player to effectivly stop the spawning of the pizzas in between waves. - checked against if the customer list, if the list was not empty - meaning customers not been killed, keep spawning. 
         @done(20-05-12 18:08) @lasted(40s)
                     
     10-05-2020 23:26:12:
-      ✔ Pizzas from the oven stop deleting after a time not currently known
-      - @today **FIXED @ 11-05-2020 00:37:07** - (Code error not destroying the gameobject)
+      ✔ Pizzas from the oven stop deleting after a time not currently known  @today **FIXED @ 11-05-2020 00:37:07** - (Code error not destroying the gameobject)
       @done(20-05-11 00:51)
             
     11-05-2020 00:09:08:

@@ -147,7 +147,6 @@ public class SpawnManager : MonoBehaviour
     public void SpawnWave()
     {
 
-        //customerCount = FindObjectsOfType<HungryCustomerMovement>().Length; //Gets the current objects with the hungry customer script active in the scene. 
         if (!WaveActive)
         {
             //GameManager.instance.DayCount++;

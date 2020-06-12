@@ -184,6 +184,17 @@ public class UIManager : MonoBehaviour
     //main game UI
     public void SetMainUIActive(bool b)
     {
+        if (countdownText.gameObject.activeInHierarchy)
+        {
+            countdownText.gameObject.SetActive(false);
+        } else if (!countdownText.gameObject.activeInHierarchy && SpawnManager.instance.CustomerList.Count == 0)
+        {
+            countdownText.gameObject.SetActive(true);
+        }
+        else
+        {
+            return;
+        }
         customersRemainingIcon.gameObject.SetActive(b);
         customersRemainingText.gameObject.SetActive(b);
         counterHealthIcon.gameObject.SetActive(b);

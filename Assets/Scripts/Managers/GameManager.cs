@@ -61,6 +61,11 @@ public class GameManager : MonoBehaviour
         }
         PauseMenu();
     }
+    //Generic method to display debug messages without having to write everything each time. 
+    public string DebugMessage()
+    {
+        return $"PizzaSlices {PizzaSlices}";
+    }
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

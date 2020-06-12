@@ -11,15 +11,11 @@ public class HungryCustomerMovement : MonoBehaviour
     [SerializeField] Sprite[] hungerSprites;
     private Light spotlight;
 
-    //v0.5 EDITED HERE (Commented out the previous code, added awake method to instantiate a new object.)
-    //private float defaultSpeed;
-    //private float movementSpeed;
     private void Awake()
     {
         float speedRange = UnityEngine.Random.Range(0.5f, 2f);
         int hungerValue = UnityEngine.Random.Range(1, 4); //int is exclusive.
         customer = new HungryCustomer(speedRange, hungerValue);
-        Debug.Log("Created a new customer");
         
     }
     // Start is called before the first frame update
@@ -33,9 +29,6 @@ public class HungryCustomerMovement : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         UpdateSprite();
 
-        //v0.5 EDITED HERE (Commented out the previous code)
-        //movementSpeed = 0.8f;
-        //defaultSpeed = movementSpeed;
     }
 
     // Update is called once per frame
@@ -85,6 +78,7 @@ public class HungryCustomerMovement : MonoBehaviour
                 spriteRenderer.sprite = hungerSprites[2];
                 break;
             default:
+                Debug.LogWarning("Could not find a sprite to match hunger level. This is not suppose to happen. Please report the issue to the game developer.");
                 break;
         }
     }

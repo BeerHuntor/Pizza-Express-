@@ -69,7 +69,6 @@ public class HappyCustomerMovement : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Customer"))
         {
-            Debug.Log("Collided with customer");
             StartCoroutine(SelectCollider());
         }
 

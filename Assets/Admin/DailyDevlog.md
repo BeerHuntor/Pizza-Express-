@@ -92,3 +92,41 @@ Daily Development Log 2020:
         - Streamed the process on twitch for 7.5 hours. 
         - Play tested the game myself,  and left thoughts of the experience in the feedback document. 
         - Removed the animation on the interactable buttons and replaced with a straight sprite swap. 
+**26-05-2020**
+    **Pizza Express**
+        - Worked on marketing updating the itch.io page filling in the description and adding screenshots. Changed the page to be public but dissallowing new downloads. 
+        - Re built Standalone and WebGL of v0.4 
+        - Unity project page updated with latest WebGL build - Future updates on itch only. 
+        - Posted first devlog onto itch, for build version 0.4
+
+**28-05-2020**
+    **Pizza Express**
+        - Fixed a bug from feedback where the double slices delivery was not activating properlly allowing the player with an empty hand to collect another delivery - The fix was in where the boolean that set the double slices active was only activating when the player picked up a pizza, thus without pizza they could circumvent the check allowing for additional deliverys when not suppose to. 
+        - Used scenemanger to load the scene on restart, now will allow the player to restart the game sucsessfully. 
+        - Went through issue tracker list and fixed some bugs. 
+
+### TAKING A BREAK FROM DEVELOPMENT TO PLAY SOME GAMES... 
+
+**08-06-2020**
+    **General**
+        - Looked at some exercises on exercism and refactored leap.cs
+
+**10-06-2020**
+    **Pizza Express**
+        - Made a new branch of the repo to implement the new improvements based on gameplay feedback. 
+        - Used inheritence to enable me to create variable customers without having to add new models and prefabs. Base customer class now is inherited by both hungry and happy customers
+        - Using the above I was able to implement variable hungry values for each spawned customer and integrate that into the 'feeding' system, so feeding a customer will minus from their hunger value until 0 at which point they will be fed. 
+        - Using inheritence I also added a variable speed output.. There is currently no relation to speed and hunger value.  All completeley done at object creation at random. 
+        - Changed color of the spotlight in relation to hunger values a different color for each value (Currently 1-3 slices) **This will need keeping an eye on for difficulty** 
+        - Started working on getting the sprites to render when instantiated and when fed slices -- Not tested it!.
+
+**11-06-2020**
+    **Pizza Express**
+        - Went against the initial plan of having a sprite render the happy smiley when customer has been fed, instead made an empty gameobject spawn in the same place as where the happy customer is spawned and made it delete itself after 3 units. This was to solve the issue of not being able to get the sprite rotate towards the player in a 3d environment.
+        - Created sprites for each customer hunger value. 
+        - Made sprites appear above the hungry customers head when they get instantiated. I had to do this in the movement script and not the base class as I could not find a way to get it to work by having it be set in the base class.  Not what I wanted to do or intended to do.  But its done. 
+
+**12-06-2020**
+    **Pizza Express**
+        - Refactored the pizza slice spawning to make it a little easier on the eyes, still not completley happy with it, but removed some repeating code. 
+        - Fixed an issue with the pizza slices not activating correctly.  They were activating on the current pizza not the next pizza. 

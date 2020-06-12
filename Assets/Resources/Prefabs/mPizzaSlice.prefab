@@ -48,8 +48,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   happyCustomerPrefab: {fileID: 7064798694757165105, guid: fad410a83a24894449e96285adddda48,
     type: 3}
-  fedParticle: {fileID: 4976956977307825950, guid: 67a290e455aa78a4eb3206cb8b14f504,
-    type: 3}
 --- !u!54 &3894915438643415872
 Rigidbody:
   m_ObjectHideFlags: 0

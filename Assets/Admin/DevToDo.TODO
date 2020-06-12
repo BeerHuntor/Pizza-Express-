@@ -87,9 +87,13 @@ Task list for daily development..
 
 25-05-2020:
     Unity:
-        ☐ Construct Audio Manager to handle sound
-        ☐ Play sounds effects on feed, delivery crate and delivery pickups
-        ☐ Pause menu
-        ☐ Main menu options screen
+        ✔ Construct Audio Manager to handle sound @done(20-05-26 12:59)
+        ✔ Play sounds effects on feed, delivery crate and delivery pickups @done(20-05-26 12:59)
+        ✔ Pause menu @done(20-05-26 12:59)
+        ✔ Main menu options screen @done(20-05-26 12:59)
 
-        ☐ Instance the scripts.. https://pastebin.com/SRGiBHFR
+        ✔ Instance the scripts.. https://pastebin.com/SRGiBHFR @done(20-05-26 12:59)
+
+26-05-2020:
+    ☐ Upload v0.4 to the unity connect page. 
+    ☐ Start work on the variating zombois
