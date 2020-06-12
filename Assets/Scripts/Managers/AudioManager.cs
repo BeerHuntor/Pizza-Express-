@@ -7,19 +7,23 @@ public class AudioManager : MonoBehaviour
 {
     private static AudioManager _instance;
 
+    private float defaultMusicVolume = 0.1f;
+    private float defaultSFXVolume = 0.8f;
     public static AudioManager instance
     {
         get { return _instance; }
     }
 
-    private AudioSource audioSource;
-    private AudioSource gameManagerAudioSource; //There to solely handle the music everything else is to be handled via audio mgr
+    private AudioSource sfxAudioSource;
+    private AudioSource musicAudioSource; //There to solely handle the music everything else is to be handled via audio mgr
 
     [SerializeField] AudioMixer mixer;
 
     private AudioClip
         menuMusic,
         gameMusic,
+        menuHover,
+        menuClick,
         deliveryCrateSound,
         customerFedSound,
         cashFlowVoiceOver,
@@ -29,12 +33,15 @@ public class AudioManager : MonoBehaviour
         rushHourVoiceOver,
         timeIsDraggingVoiceOver,
         windFallVoiceOver;
+        
 
     public enum SoundType
     {
         NONE,
         MENU_MUSIC,
         GAME_MUSIC,
+        MENU_HOVER,
+        MENU_CLICK,
         DELIVERY_CRATE,
         CUSTOMER_FED,
         CASHFLOW,
@@ -61,6 +68,10 @@ public class AudioManager : MonoBehaviour
     {
         menuMusic = Resources.Load<AudioClip>("Sounds/Main_Menu_Track");
         gameMusic = Resources.Load<AudioClip>("Sounds/Game_Play_Track");
+
+        menuHover = Resources.Load<AudioClip>("Sounds/Menu_Highlight_SFX");
+        menuClick = Resources.Load<AudioClip>("Sounds/Menu_Click_SFX");
+
         deliveryCrateSound = Resources.Load<AudioClip>("Sounds/Delivery_Crate_Sound");
         customerFedSound = Resources.Load<AudioClip>("Sounds/Eating");
         cashFlowVoiceOver = Resources.Load<AudioClip>("Sounds/Cash_Flow_Voice_Over");
@@ -70,69 +81,80 @@ public class AudioManager : MonoBehaviour
         rushHourVoiceOver = Resources.Load<AudioClip>("Sounds/Rush_Hour_Voice_Over");
         timeIsDraggingVoiceOver = Resources.Load<AudioClip>("Sounds/Time_Is_Slow_Voice_Over");
         windFallVoiceOver = Resources.Load<AudioClip>("Sounds/Windfall_Voice_Over");
-
-        audioSource = gameObject.GetComponent<AudioSource>();
-        gameManagerAudioSource = GameObject.Find("GameManager").GetComponent<AudioSource>();
+        //Used for SFX track
+        sfxAudioSource = gameObject.GetComponent<AudioSource>();
+        //Used for music track. 
+        musicAudioSource = GameObject.Find("GameManager").GetComponent<AudioSource>();
     }
     public void PlaySound(SoundType sound)
     {
         switch (sound)
         {
             case SoundType.MENU_MUSIC:
-                gameManagerAudioSource.clip = menuMusic;
-                gameManagerAudioSource.Play();
+                PlayAudioClip(menuMusic, musicAudioSource, false, defaultMusicVolume);
                 break;
             case SoundType.GAME_MUSIC:
-                gameManagerAudioSource.clip = gameMusic;
-                gameManagerAudioSource.Play();
+                PlayAudioClip(gameMusic, musicAudioSource, false, defaultMusicVolume);
+                break;
+            case SoundType.MENU_HOVER:
+                PlayAudioClip(menuHover, sfxAudioSource, true, defaultSFXVolume);
+                break;
+            case SoundType.MENU_CLICK:
+                PlayAudioClip(menuClick, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.DELIVERY_CRATE:
-                audioSource.clip = deliveryCrateSound;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(deliveryCrateSound, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.CUSTOMER_FED:
-                audioSource.clip = customerFedSound;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(customerFedSound, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.CASHFLOW:
-                audioSource.clip = cashFlowVoiceOver;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(cashFlowVoiceOver, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.DOUBLE_SLICES:
-                audioSource.clip = doubleSliceVoiceOver;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(doubleSliceVoiceOver, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.ENERGIZED:
-                audioSource.clip = energizedVoiceOver;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(energizedVoiceOver, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.OVERTIME:
-                audioSource.clip = overtimeVoiceOver;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(overtimeVoiceOver, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.RUSH_HOUR:
-                audioSource.clip = rushHourVoiceOver;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(rushHourVoiceOver, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.TIME_IS_DRAGGING:
-                audioSource.clip = timeIsDraggingVoiceOver;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(timeIsDraggingVoiceOver, sfxAudioSource, true, defaultSFXVolume);
                 break;
             case SoundType.WINDFALL:
-                audioSource.clip = windFallVoiceOver;
-                audioSource.PlayOneShot(audioSource.clip);
+                PlayAudioClip(windFallVoiceOver, sfxAudioSource, true, defaultSFXVolume);
                 break;
             default:
-                gameManagerAudioSource.Stop();
+                musicAudioSource.Stop();
                 break;
         }
     }
 
+    //Method call to play the given audio clip on the given audio source. 
+    private void PlayAudioClip(AudioClip clipName, AudioSource sourceName, bool isOneShot, float volume = 1f)
+    {
+        sourceName.clip = clipName;
+        sourceName.volume = volume;
+        if (isOneShot)
+        {
+            sourceName.PlayOneShot(sourceName.clip);
+        } else
+        {
+            sourceName.Play();
+        }
+
+    }
+
     public void StopMusicPlaying()
     {
-        if (gameManagerAudioSource.isPlaying)
+        if (musicAudioSource.isPlaying)
         {
-            gameManagerAudioSource.Stop();
+            musicAudioSource.Stop();
         }
         else
         {
@@ -167,6 +189,7 @@ public class AudioManager : MonoBehaviour
     public void SetSoundFxVolumeLevel(float lvl)
     {
         UIManager.instance.SfxSliderVal = lvl;
+        Debug.Log(lvl);
         mixer.SetFloat("SoundEffectsVolume", Mathf.Log10(lvl) * 60);
         if (lvl <= 0)
         {
