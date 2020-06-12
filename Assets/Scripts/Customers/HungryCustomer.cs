@@ -44,7 +44,7 @@ public class HungryCustomer : Customer
     //Sets the tip value of the customer when fed to completion is what the amount they will pay. 
     private void SetTipValue()
     {
-        TipValue = Random.Range(1.5f, 4f);
+        TipValue = Random.Range(1.5f, 4f) * HungerValue;
     }
 
     public int UpdateHungerValue()
